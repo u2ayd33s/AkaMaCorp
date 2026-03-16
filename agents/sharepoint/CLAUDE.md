@@ -18,6 +18,7 @@ SharePoint・SPFx・REST API に特化したエージェント。
 | `ms-graph-api` | Microsoft Graph API（ユーザー・Teams・カレンダー・OneDrive）実装 |
 | `power-automate-tips` | Power Automate 連携フロー設計パターン |
 | `sp-permissions` | サイト権限・共有リンク・アクセス管理の設計と実装 |
+| `sp-html-viewer` | sp-html-viewer Web パーツ向け HTML/CSS/JS の作成 |
 
 ## 前提知識
 - Node.js / TypeScript

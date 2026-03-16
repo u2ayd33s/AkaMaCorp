@@ -9,8 +9,8 @@
 
 ### sharepoint
 - **パス**: `agents/sharepoint/`
-- **専門領域**: SharePoint Online / SPFx / REST API / Microsoft Graph / Power Automate / 権限管理
-- **得意なこと**: SPFx Web パーツ・拡張機能の開発、SharePoint REST API 実装、Graph API 活用、Power Automate フロー設計、権限・アクセス管理
+- **専門領域**: SharePoint Online / SPFx / REST API / Microsoft Graph / Power Automate / 権限管理 / sp-html-viewer
+- **得意なこと**: SPFx Web パーツ・拡張機能の開発、SharePoint REST API 実装、Graph API 活用、Power Automate フロー設計、権限・アクセス管理、sp-html-viewer 向け HTML 作成
 - **スキル**:
   | スキル | 概要 |
   |--------|------|
@@ -20,6 +20,7 @@
   | `ms-graph-api` | Microsoft Graph API（ユーザー・Teams・カレンダー・OneDrive）実装 |
   | `power-automate-tips` | Power Automate 連携フロー設計パターン（承認・通知・バッチ） |
   | `sp-permissions` | サイト権限・共有リンク・アクセス管理の設計と REST/Graph 実装 |
+  | `sp-html-viewer` | sp-html-viewer Web パーツ向け HTML/CSS/JS の作成 |
 - **向いているタスク例**:
   - SharePoint リストのデータ取得・更新処理を作りたい
   - SPFx で社内ポータルのコンポーネントを開発したい
@@ -28,6 +29,7 @@
   - SPFx を使わずにページをカスタマイズしたい（ScriptLoader 経由）
   - Power Automate で承認フロー・Teams 通知を自動化したい
   - サイトの権限設計・共有リンク管理を整理したい
+  - sp-html-viewer で表示する HTML ページを作りたい
 
 ---
 
