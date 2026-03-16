@@ -5,6 +5,7 @@
 | エージェント | 役割 | 専門領域 |
 |------------|------|---------|
 | **secretary** | オーケストレーター | プロジェクト管理・エージェント管理・ルーティング |
+| **reviewer** | レビュワー | PRレビュー・承認・マージ管理 |
 | sharepoint | 専門エージェント | SharePoint / SPFx / REST API |
 | frontend | 専門エージェント | HTML / CSS / JavaScript / UI/UX |
 
@@ -20,6 +21,13 @@ AkaMaCorp/
 │   │       ├── route-agent/          ← エージェントへの振り分け
 │   │       │   └── SKILL.md
 │   │       └── project-track/        ← プロジェクト進捗管理
+│   │           └── SKILL.md
+│   ├── reviewer/                     ← レビュワーエージェント（PR管理）
+│   │   ├── CLAUDE.md
+│   │   └── skills/
+│   │       ├── review-pr/            ← PRレビュー・承認・差し戻し
+│   │       │   └── SKILL.md
+│   │       └── merge-pr/             ← 承認済みPRのマージ
 │   │           └── SKILL.md
 │   ├── sharepoint/                   ← SharePoint 専門エージェント
 │   │   ├── CLAUDE.md
