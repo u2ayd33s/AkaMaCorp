@@ -2,34 +2,56 @@
 
 ## エージェント構成
 
-| エージェント | 専門領域 | ディレクトリ |
-|------------|---------|------------|
-| SharePoint Agent | SharePoint / SPFx / REST API | `agents/sharepoint/` |
-| Frontend Agent | HTML / CSS / JS / UI/UX | `agents/frontend/` |
+| エージェント | 役割 | 専門領域 |
+|------------|------|---------|
+| **secretary** | オーケストレーター | プロジェクト管理・エージェント管理・ルーティング |
+| sharepoint | 専門エージェント | SharePoint / SPFx / REST API |
+| frontend | 専門エージェント | HTML / CSS / JavaScript / UI/UX |
 
 ## フォルダ構成
 
 ```
 AkaMaCorp/
 ├── agents/
-│   ├── sharepoint/
-│   │   ├── CLAUDE.md          # エージェント定義
+│   ├── secretary/                    ← 秘書エージェント（統括）
+│   │   ├── CLAUDE.md
+│   │   ├── agent-registry.md         ← 全エージェント登録情報
 │   │   └── skills/
-│   │       ├── spfx-component/ # SPFx 開発スキル
+│   │       ├── route-agent/          ← エージェントへの振り分け
 │   │       │   └── SKILL.md
-│   │       └── sp-rest-api/    # SharePoint REST API スキル
+│   │       └── project-track/        ← プロジェクト進捗管理
 │   │           └── SKILL.md
-│   └── frontend/
-│       ├── CLAUDE.md          # エージェント定義
+│   ├── sharepoint/                   ← SharePoint 専門エージェント
+│   │   ├── CLAUDE.md
+│   │   └── skills/
+│   │       ├── spfx-component/
+│   │       └── sp-rest-api/
+│   └── frontend/                     ← フロントエンド専門エージェント
+│       ├── CLAUDE.md
 │       └── skills/
-│           ├── ui-component/  # UI コンポーネント生成スキル
-│           │   └── SKILL.md
-│           └── css-layout/    # CSS レイアウト設計スキル
-│               └── SKILL.md
+│           ├── ui-component/
+│           └── css-layout/
+├── projects/                         ← プロジェクト管理ファイル（随時生成）
 └── README.md
 ```
 
-## スキルの更新方法
+## エージェントの使い方
 
-各スキルの `SKILL.md` を直接編集してください。
+### 基本フロー
+```
+ユーザーの指示
+    ↓
+secretary が内容を解析（route-agent スキル）
+    ↓
+適切な専門エージェントへ割り振り
+    ↓
+実行結果を secretary が管理・記録（project-track スキル）
+```
+
+### エージェントの追加
+1. `agents/<エージェント名>/` にディレクトリを作成
+2. `CLAUDE.md` と `skills/<スキル名>/SKILL.md` を作成
+3. `agents/secretary/agent-registry.md` に登録
+
+## スキルの更新
 skill-creator スキルを使うことで、テスト・評価・改善のサイクルを回せます。
