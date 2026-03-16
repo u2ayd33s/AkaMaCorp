@@ -12,6 +12,7 @@ SharePoint・SPFx・REST API に特化したエージェント。
 |--------|------|
 | `spfx-component` | SPFx Web パーツ・拡張機能の雛形生成と開発 |
 | `sp-rest-api` | SharePoint REST API 呼び出しコードの生成 |
+| `xsp-script-loader` | ページパスに対応した JS/CSS 自動注入によるカスタマイズ開発 |
 
 ## 前提知識
 - Node.js / TypeScript

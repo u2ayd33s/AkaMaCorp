@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+    <ClientSideComponentInstance Title="ScriptLoader" Location="ClientSideExtension.ApplicationCustomizer" ComponentId="fb680a2e-77cf-44c5-804a-ca2fa3764e9d" Properties="{}">
+    </ClientSideComponentInstance>
+</Elements>

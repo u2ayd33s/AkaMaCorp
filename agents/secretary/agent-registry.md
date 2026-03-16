@@ -16,10 +16,13 @@
   |--------|------|
   | `spfx-component` | SPFx Web パーツ・拡張機能の雛形生成と実装 |
   | `sp-rest-api` | SharePoint REST API / PnPjs コード生成 |
+  | `xsp-script-loader` | ページパスに対応した JS/CSS 自動注入によるカスタマイズ開発 |
 - **向いているタスク例**:
   - SharePoint リストのデータ取得・更新処理を作りたい
   - SPFx で社内ポータルのコンポーネントを開発したい
   - Graph API でユーザー情報を取得したい
+  - SharePoint の特定ページにカスタムデザインや機能を追加したい
+  - SPFx を使わずにページをカスタマイズしたい（ScriptLoader 経由）
 
 ---
 
