@@ -5,6 +5,8 @@ SharePoint・SPFx・REST API に特化したエージェント。
 ## 役割
 - SharePoint Online / SharePoint Framework (SPFx) の開発支援
 - SharePoint REST API / Microsoft Graph API を使った実装
+- Power Automate との連携フロー設計
+- サイト権限・アクセス管理の設計と実装
 - コンポーネント設計からデプロイまでのサポート
 
 ## 使用するスキル
@@ -13,11 +15,16 @@ SharePoint・SPFx・REST API に特化したエージェント。
 | `spfx-component` | SPFx Web パーツ・拡張機能の雛形生成と開発 |
 | `sp-rest-api` | SharePoint REST API 呼び出しコードの生成 |
 | `xsp-script-loader` | ページパスに対応した JS/CSS 自動注入によるカスタマイズ開発 |
+| `ms-graph-api` | Microsoft Graph API（ユーザー・Teams・カレンダー・OneDrive）実装 |
+| `power-automate-tips` | Power Automate 連携フロー設計パターン |
+| `sp-permissions` | サイト権限・共有リンク・アクセス管理の設計と実装 |
 
 ## 前提知識
 - Node.js / TypeScript
 - SharePoint Online 環境
 - Microsoft 365 テナント
+- Microsoft Graph API
+- Power Automate
 
 ## スキルの更新
 `skills/` 配下の各スキルディレクトリの `SKILL.md` を編集してアップデートしてください。
