@@ -14,32 +14,43 @@
 ```
 AkaMaCorp/
 ├── agents/
-│   ├── secretary/                    ← 秘書エージェント（統括）
+│   ├── 01_secretary/                 ← 秘書エージェント（統括）
 │   │   ├── CLAUDE.md
 │   │   ├── agent-registry.md         ← 全エージェント登録情報
 │   │   └── skills/
 │   │       ├── route-agent/          ← エージェントへの振り分け
-│   │       │   └── SKILL.md
-│   │       └── project-track/        ← プロジェクト進捗管理
-│   │           └── SKILL.md
-│   ├── reviewer/                     ← レビュワーエージェント（PR管理）
+│   │       ├── project-track/        ← プロジェクト進捗管理
+│   │       └── nfd-crystallize/      ← 知識結晶化サイクル管理
+│   ├── 02_reviewer/                  ← レビュワーエージェント（PR管理）
 │   │   ├── CLAUDE.md
 │   │   └── skills/
 │   │       ├── review-pr/            ← PRレビュー・承認・差し戻し
-│   │       │   └── SKILL.md
 │   │       └── merge-pr/             ← 承認済みPRのマージ
-│   │           └── SKILL.md
-│   ├── sharepoint/                   ← SharePoint 専門エージェント
+│   ├── 03_sharepoint/                ← SharePoint 専門エージェント
 │   │   ├── CLAUDE.md
 │   │   └── skills/
-│   │       ├── spfx-component/
-│   │       └── sp-rest-api/
-│   └── frontend/                     ← フロントエンド専門エージェント
+│   │       ├── spfx-component/       ← SPFx Web パーツ・拡張機能
+│   │       ├── sp-rest-api/          ← SharePoint REST API / PnPjs
+│   │       ├── xsp-script-loader/    ← JS/CSS 自動注入カスタマイズ
+│   │       ├── ms-graph-api/         ← Microsoft Graph API
+│   │       ├── power-automate-tips/  ← Power Automate フロー設計
+│   │       ├── sp-permissions/       ← 権限・アクセス管理
+│   │       └── sp-html-viewer/       ← sp-html-viewer 向け HTML
+│   └── 04_frontend/                  ← フロントエンド専門エージェント
 │       ├── CLAUDE.md
 │       └── skills/
-│           ├── ui-component/
-│           └── css-layout/
-├── projects/                         ← プロジェクト管理ファイル（随時生成）
+│           ├── ui-component/         ← 再利用可能コンポーネント
+│           ├── css-layout/           ← レスポンシブレイアウト
+│           ├── figma-to-code/        ← Figma → コード変換
+│           ├── design-system/        ← デザイントークン標準化
+│           └── a11y-check/           ← WCAG アクセシビリティ
+├── memory/                           ← エクスペリエンス層（NFD）
+│   ├── README.md                     ← 使い方説明
+│   ├── insights.md                   ← 洞察・発見ログ
+│   ├── error-patterns.md             ← エラー・失敗パターン
+│   ├── daily/                        ← 日次ログ（YYYY-MM-DD.md）
+│   └── crystallization/              ← 結晶化チェックポイント記録
+├── projects/                         ← プロジェクト管理ファイル
 └── README.md
 ```
 

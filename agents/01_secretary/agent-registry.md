@@ -8,7 +8,7 @@
 ## 登録エージェント
 
 ### sharepoint
-- **パス**: `agents/sharepoint/`
+- **パス**: `agents/03_sharepoint/`
 - **専門領域**: SharePoint Online / SPFx / REST API / Microsoft Graph / Power Automate / 権限管理 / sp-html-viewer
 - **得意なこと**: SPFx Web パーツ・拡張機能の開発、SharePoint REST API 実装、Graph API 活用、Power Automate フロー設計、権限・アクセス管理、sp-html-viewer 向け HTML 作成
 - **スキル**:
@@ -34,7 +34,7 @@
 ---
 
 ### frontend
-- **パス**: `agents/frontend/`
+- **パス**: `agents/04_frontend/`
 - **専門領域**: HTML / CSS / JavaScript / UI/UX / レスポンシブデザイン / Figma / デザインシステム / アクセシビリティ
 - **得意なこと**: UI コンポーネント生成、CSS レイアウト設計、Figma デザインのコード化、デザイントークン設計、WCAG 対応
 - **スキル**:
@@ -56,7 +56,7 @@
 ---
 
 ### reviewer
-- **パス**: `agents/reviewer/`
+- **パス**: `agents/02_reviewer/`
 - **専門領域**: PRレビュー・検証・マージ管理
 - **得意なこと**: 各エージェントのPR差分確認、エージェント別レビュー基準の適用、承認・マージ・差し戻し判断
 - **スキル**:
