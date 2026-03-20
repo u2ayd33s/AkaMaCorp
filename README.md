@@ -18,9 +18,11 @@ AkaMaCorp/
 │   │   ├── CLAUDE.md
 │   │   ├── agent-registry.md         ← 全エージェント登録情報
 │   │   └── skills/
-│   │       ├── route-agent/          ← エージェントへの振り分け
-│   │       ├── project-track/        ← プロジェクト進捗管理
-│   │       └── nfd-crystallize/      ← 知識結晶化サイクル管理
+│   │       ├── plan-think/           ← THINK: 要求を問い直し PLAN.md 作成
+│   │       ├── plan-review/          ← PLAN: アーキテクチャ・テスト計画・承認
+│   │       ├── route-agent/          ← BUILD: エージェントへの振り分け
+│   │       ├── project-track/        ← 全フェーズ: プロジェクト進捗管理
+│   │       └── nfd-crystallize/      ← REFLECT: 知識結晶化サイクル管理
 │   ├── 02_reviewer/                  ← レビュワーエージェント（PR管理）
 │   │   ├── CLAUDE.md
 │   │   └── skills/
@@ -43,7 +45,8 @@ AkaMaCorp/
 │           ├── css-layout/           ← レスポンシブレイアウト
 │           ├── figma-to-code/        ← Figma → コード変換
 │           ├── design-system/        ← デザイントークン標準化
-│           └── a11y-check/           ← WCAG アクセシビリティ
+│           ├── a11y-check/           ← WCAG アクセシビリティ
+│           └── qa-check/             ← QA: 動作確認・バグ修正・リグレッションテスト
 ├── memory/                           ← エクスペリエンス層（NFD）
 │   ├── README.md                     ← 使い方説明
 │   ├── insights.md                   ← 洞察・発見ログ
@@ -51,21 +54,38 @@ AkaMaCorp/
 │   ├── daily/                        ← 日次ログ（YYYY-MM-DD.md）
 │   └── crystallization/              ← 結晶化チェックポイント記録
 ├── projects/                         ← プロジェクト管理ファイル
+├── SPRINT-FLOW.md                    ← スプリントフロー定義（gstack準拠）
 └── README.md
 ```
 
-## エージェントの使い方
+## スプリントフロー
 
-### 基本フロー
+詳細は `SPRINT-FLOW.md` を参照。
+
 ```
-ユーザーの指示
+ユーザーの要求
     ↓
-secretary が内容を解析（route-agent スキル）
+[THINK]   secretary: 要求を問い直し PLAN.md を作成
+    ↓ ユーザー確認
+[PLAN]    secretary: アーキテクチャ・テスト計画を確定
+    ↓ ユーザー承認
+[BUILD]   sharepoint / frontend: 実装 → PR 作成
     ↓
-適切な専門エージェントへ割り振り
+[REVIEW]  reviewer: コードレビュー → 承認 or 差し戻し
+    ↓ 承認
+[QA]      frontend: 動作確認 → QA レポート
+    ↓ 合格
+[SHIP]    reviewer: マージ → secretary: ドキュメント更新
     ↓
-実行結果を secretary が管理・記録（project-track スキル）
+[REFLECT] secretary: 振り返り・知識結晶化
 ```
+
+### タスク規模別の省略ルール
+| 規模 | 必須フェーズ |
+|------|------------|
+| 小（バグ修正・1 ファイル） | BUILD → REVIEW → SHIP |
+| 中（新機能・複数ファイル） | THINK → PLAN → BUILD → REVIEW → QA → SHIP |
+| 大（新エージェント・設計変更） | 全フェーズ + ユーザー承認チェックポイント |
 
 ### エージェントの追加
 1. `agents/<エージェント名>/` にディレクトリを作成

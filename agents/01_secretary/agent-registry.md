@@ -7,6 +7,20 @@
 
 ## 登録エージェント
 
+### secretary
+- **パス**: `agents/01_secretary/`
+- **専門領域**: オーケストレーション・企画立案・実装計画・プロジェクト管理・知識結晶化
+- **スキル**:
+  | スキル | 概要 | スプリントフェーズ |
+  |--------|------|----------------|
+  | `plan-think` | 要求を問い直し PLAN.md を作成 | THINK |
+  | `plan-review` | アーキテクチャ・テスト計画の確定とユーザー承認 | PLAN |
+  | `route-agent` | ユーザー指示を解析して最適なエージェントへ割り振り | BUILD |
+  | `project-track` | プロジェクト・タスクの進捗管理と状況レポート | 全フェーズ |
+  | `nfd-crystallize` | エクスペリエンス層の管理・知識結晶化サイクルの実行 | REFLECT |
+
+---
+
 ### sharepoint
 - **パス**: `agents/03_sharepoint/`
 - **専門領域**: SharePoint Online / SPFx / REST API / Microsoft Graph / Power Automate / 権限管理 / sp-html-viewer
@@ -45,6 +59,7 @@
   | `figma-to-code` | Figma デザインから HTML/CSS/JS への変換（Figma MCP 連携） |
   | `design-system` | カラー・タイポグラフィ・スペーシングなどデザイントークンの標準化 |
   | `a11y-check` | WCAG 2.1 AA 準拠チェックと修正提案 |
+  | `qa-check` | 動作確認・バグ修正・リグレッションテスト生成 |
 - **向いているタスク例**:
   - ページのレイアウトを作りたい
   - モーダルやドロップダウンなど UI パーツが欲しい
