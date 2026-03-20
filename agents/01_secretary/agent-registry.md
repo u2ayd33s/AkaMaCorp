@@ -7,8 +7,22 @@
 
 ## 登録エージェント
 
+### secretary
+- **パス**: `agents/01_secretary/`
+- **専門領域**: オーケストレーション・企画立案・実装計画・プロジェクト管理・知識結晶化
+- **スキル**:
+  | スキル | 概要 | スプリントフェーズ |
+  |--------|------|----------------|
+  | `plan-think` | 要求を問い直し PLAN.md を作成 | THINK |
+  | `plan-review` | アーキテクチャ・テスト計画の確定とユーザー承認 | PLAN |
+  | `route-agent` | ユーザー指示を解析して最適なエージェントへ割り振り | BUILD |
+  | `project-track` | プロジェクト・タスクの進捗管理と状況レポート | 全フェーズ |
+  | `nfd-crystallize` | エクスペリエンス層の管理・知識結晶化サイクルの実行 | REFLECT |
+
+---
+
 ### sharepoint
-- **パス**: `agents/sharepoint/`
+- **パス**: `agents/03_sharepoint/`
 - **専門領域**: SharePoint Online / SPFx / REST API / Microsoft Graph / Power Automate / 権限管理 / sp-html-viewer
 - **得意なこと**: SPFx Web パーツ・拡張機能の開発、SharePoint REST API 実装、Graph API 活用、Power Automate フロー設計、権限・アクセス管理、sp-html-viewer 向け HTML 作成
 - **スキル**:
@@ -34,7 +48,7 @@
 ---
 
 ### frontend
-- **パス**: `agents/frontend/`
+- **パス**: `agents/04_frontend/`
 - **専門領域**: HTML / CSS / JavaScript / UI/UX / レスポンシブデザイン / Figma / デザインシステム / アクセシビリティ
 - **得意なこと**: UI コンポーネント生成、CSS レイアウト設計、Figma デザインのコード化、デザイントークン設計、WCAG 対応
 - **スキル**:
@@ -45,6 +59,7 @@
   | `figma-to-code` | Figma デザインから HTML/CSS/JS への変換（Figma MCP 連携） |
   | `design-system` | カラー・タイポグラフィ・スペーシングなどデザイントークンの標準化 |
   | `a11y-check` | WCAG 2.1 AA 準拠チェックと修正提案 |
+  | `qa-check` | 動作確認・バグ修正・リグレッションテスト生成 |
 - **向いているタスク例**:
   - ページのレイアウトを作りたい
   - モーダルやドロップダウンなど UI パーツが欲しい
@@ -56,7 +71,7 @@
 ---
 
 ### reviewer
-- **パス**: `agents/reviewer/`
+- **パス**: `agents/02_reviewer/`
 - **専門領域**: PRレビュー・検証・マージ管理
 - **得意なこと**: 各エージェントのPR差分確認、エージェント別レビュー基準の適用、承認・マージ・差し戻し判断
 - **スキル**:
