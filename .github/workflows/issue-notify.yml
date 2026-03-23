@@ -11,43 +11,40 @@ jobs:
       issues: write
 
     steps:
-      - name: Add "status: waiting" label
+      - name: Add waiting label
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              labels: ['status: waiting']
+              labels: ['\u23f3 status: waiting']
             });
 
       - name: Post acknowledgement comment
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const issue = context.payload.issue;
-            const body = [
-              '## Issue を受け付けました',
+            const lines = [
+              '## Issue \u3092\u53d7\u3051\u4ed8\u3051\u307e\u3057\u305f',
               '',
-              `**Issue #${issue.number}**「${issue.title}」を受け付けました。`,
-              '内容を確認し、対応いたします。',
+              '**Issue #' + issue.number + '**\u300c' + issue.title + '\u300d\u3092\u53d7\u3051\u4ed8\u3051\u307e\u3057\u305f\u3002',
+              '\u5185\u5bb9\u3092\u78ba\u8a8d\u3057\u3001\u5bfe\u5fdc\u3044\u305f\u3057\u307e\u3059\u3002',
               '',
               '---',
-              '| 項目 | 内容 |',
+              '| \u9805\u76ee | \u5185\u5bb9 |',
               '|------|------|',
-              `| 投稿者 | @${issue.user.login} |`,
-              `| 投稿日時 | ${new Date(issue.created_at).toLocaleString('ja-JP', {timeZone: 'Asia/Tokyo'})} |`,
-              `| ステータス | \`status: waiting\` |`,
+              '| \u6295\u7a3f\u8005 | @' + issue.user.login + ' |',
+              '| \u6295\u7a3f\u65e5\u6642 | ' + new Date(issue.created_at).toLocaleString('ja-JP', {timeZone: 'Asia/Tokyo'}) + ' |',
+              '| \u30b9\u30c6\u30fc\u30bf\u30b9 | `\u23f3 status: waiting` |',
               '',
-              '> このコメントは GitHub Actions により自動投稿されました。',
-            ].join('\n');
-
+              '> \u3053\u306e\u30b3\u30e1\u30f3\u30c8\u306f GitHub Actions \u306b\u3088\u308a\u81ea\u52d5\u6295\u7a3f\u3055\u308c\u307e\u3057\u305f\u3002',
+            ];
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue.number,
-              body: body
+              body: lines.join('\n')
             });
