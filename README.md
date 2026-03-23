@@ -8,6 +8,7 @@
 | **reviewer** | レビュワー | PRレビュー・承認・マージ管理 |
 | sharepoint | 専門エージェント | SharePoint / SPFx / REST API |
 | frontend | 専門エージェント | HTML / CSS / JavaScript / UI/UX |
+| discrepancy-check | 専門エージェント | Excel / Figma 差分チェック・レポート生成 |
 
 ## フォルダ構成
 
@@ -38,15 +39,22 @@ AkaMaCorp/
 │   │       ├── power-automate-tips/  ← Power Automate フロー設計
 │   │       ├── sp-permissions/       ← 権限・アクセス管理
 │   │       └── sp-html-viewer/       ← sp-html-viewer 向け HTML
-│   └── 04_frontend/                  ← フロントエンド専門エージェント
+│   ├── 04_frontend/                  ← フロントエンド専門エージェント
+│   │   ├── CLAUDE.md
+│   │   └── skills/
+│   │       ├── ui-component/         ← 再利用可能コンポーネント
+│   │       ├── css-layout/           ← レスポンシブレイアウト
+│   │       ├── figma-to-code/        ← Figma → コード変換
+│   │       ├── design-system/        ← デザイントークン標準化
+│   │       ├── a11y-check/           ← WCAG アクセシビリティ
+│   │       └── qa-check/             ← QA: 動作確認・バグ修正・リグレッションテスト
+│   └── 05_discrepancy-check/         ← 差分チェック専門エージェント
 │       ├── CLAUDE.md
 │       └── skills/
-│           ├── ui-component/         ← 再利用可能コンポーネント
-│           ├── css-layout/           ← レスポンシブレイアウト
-│           ├── figma-to-code/        ← Figma → コード変換
-│           ├── design-system/        ← デザイントークン標準化
-│           ├── a11y-check/           ← WCAG アクセシビリティ
-│           └── qa-check/             ← QA: 動作確認・バグ修正・リグレッションテスト
+│           ├── excel-parse/          ← ExcelデータをJSON抽出
+│           ├── figma-fetch/          ← FigmaデザインデータをJSON取得
+│           ├── diff-check/           ← ExcelとFigmaの照合・差分検出
+│           └── report-gen/           ← 差分レポートMarkdown出力
 ├── memory/                           ← エクスペリエンス層（NFD）
 │   ├── README.md                     ← 使い方説明
 │   ├── insights.md                   ← 洞察・発見ログ
