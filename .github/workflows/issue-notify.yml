@@ -1,0 +1,53 @@
+name: Issue Notification
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Add "status: waiting" label
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['status: waiting']
+            });
+
+      - name: Post acknowledgement comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = context.payload.issue;
+            const body = [
+              '## Issue を受け付けました',
+              '',
+              `**Issue #${issue.number}**「${issue.title}」を受け付けました。`,
+              '内容を確認し、対応いたします。',
+              '',
+              '---',
+              '| 項目 | 内容 |',
+              '|------|------|',
+              `| 投稿者 | @${issue.user.login} |`,
+              `| 投稿日時 | ${new Date(issue.created_at).toLocaleString('ja-JP', {timeZone: 'Asia/Tokyo'})} |`,
+              `| ステータス | \`status: waiting\` |`,
+              '',
+              '> このコメントは GitHub Actions により自動投稿されました。',
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: body
+            });
