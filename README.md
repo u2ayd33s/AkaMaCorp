@@ -1,37 +1,5 @@
 # AkaMaCorp
 
-## Issues ラベル管理
-
-Issues での依頼・管理に使用するラベル体系です。新しいラベルを追加した際はこのセクションも更新してください。
-
-### 依頼者 (`from:`)
-
-| ラベル | 色 | 説明 |
-|--------|----|------|
-| `from: user` | ![\#0052CC](https://placehold.co/12x12/0052CC/0052CC.png) `#0052CC` | ユーザーからの依頼 |
-| `from: claude-code` | ![\#5319E7](https://placehold.co/12x12/5319E7/5319E7.png) `#5319E7` | ClaudeCode からの依頼・提案 |
-
-### 作業種別 (`type:`)
-
-| ラベル | 色 | 説明 |
-|--------|----|------|
-| `type: check` | ![\#FBCA04](https://placehold.co/12x12/FBCA04/FBCA04.png) `#FBCA04` | 差分チェック・確認作業 |
-| `type: register` | ![\#0E8A16](https://placehold.co/12x12/0E8A16/0E8A16.png) `#0E8A16` | URL・データ登録 |
-| `type: fix` | ![\#E11D48](https://placehold.co/12x12/E11D48/E11D48.png) `#E11D48` | 修正依頼 |
-| `type: setup` | ![\#006B75](https://placehold.co/12x12/006B75/006B75.png) `#006B75` | セットアップ・初期設定 |
-| `type: report` | ![\#1D76DB](https://placehold.co/12x12/1D76DB/1D76DB.png) `#1D76DB` | レポート出力・集計 |
-
-### ステータス (`status:`)
-
-| ラベル | 色 | 説明 |
-|--------|----|------|
-| `status: in-progress` | ![\#FF7619](https://placehold.co/12x12/FF7619/FF7619.png) `#FF7619` | 対応中 |
-| `status: done` | ![\#2EA44F](https://placehold.co/12x12/2EA44F/2EA44F.png) `#2EA44F` | 完了 |
-| `status: waiting` | ![\#BFD4F2](https://placehold.co/12x12/BFD4F2/BFD4F2.png) `#BFD4F2` | 情報待ち・保留中 |
-
----
-
-
 ## エージェント構成
 
 | エージェント | 役割 | 専門領域 |
