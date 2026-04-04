@@ -21,8 +21,32 @@
 
 ---
 
+### designer
+- **パス**: `agents/03_designer/`
+- **専門領域**: Web UI/UX デザイン / Figma / ワイヤーフレーム / デザインシステム / ブランドガイドライン / デザインハンドオフ
+- **得意なこと**: ワイヤーフレーム・プロトタイプ設計、Figma デザイン制作・管理、UX 評価・改善提案、デザイントークン体系化、開発向けデザイン仕様書作成
+- **スキル**:
+  | スキル | 概要 |
+  |--------|------|
+  | `design-standards` | CSS Design Awards / Awwwards / Apple HIG / Material 基準・AI制作回避チェックリスト |
+  | `design-craft` | プロ品質UIテクニック（Inter Variable・半透明リング・ネスト角丸・非対称レイアウト等） |
+  | `wireframe` | ワイヤーフレーム・情報設計・プロトタイプ設計 |
+  | `ux-review` | UX 評価・ヒューリスティック分析・実装乖離チェック |
+  | `brand-guide` | カラー・タイポグラフィ等デザイントークンの体系化 |
+  | `design-handoff` | 開発向けデザイン仕様書・コンポーネント仕様の作成 |
+  | `figma-design` | Figma MCP を活用したデザイン制作・取得・管理 |
+- **向いているタスク例**:
+  - 新規ページ・機能の UI をワイヤーフレームで設計したい
+  - Figma でビジュアルデザインを作成・管理したい
+  - カラー・タイポグラフィなどデザインシステムの基盤を整備したい
+  - 実装済みUIとFigmaデザインの乖離を確認したい
+  - 開発エージェントへデザイン仕様を引き渡したい
+  - UX上の問題点を洗い出し改善提案したい
+
+---
+
 ### sharepoint
-- **パス**: `agents/03_sharepoint/`
+- **パス**: `agents/04_sharepoint/`
 - **専門領域**: SharePoint Online / SPFx / REST API / Microsoft Graph / Power Automate / 権限管理 / sp-html-viewer
 - **得意なこと**: SPFx Web パーツ・拡張機能の開発、SharePoint REST API 実装、Graph API 活用、Power Automate フロー設計、権限・アクセス管理、sp-html-viewer 向け HTML 作成
 - **スキル**:
@@ -48,7 +72,7 @@
 ---
 
 ### frontend
-- **パス**: `agents/04_frontend/`
+- **パス**: `agents/05_frontend/`
 - **専門領域**: HTML / CSS / JavaScript / UI/UX / レスポンシブデザイン / Figma / デザインシステム / アクセシビリティ
 - **得意なこと**: UI コンポーネント生成、CSS レイアウト設計、Figma デザインのコード化、デザイントークン設計、WCAG 対応
 - **スキル**:
@@ -88,7 +112,7 @@
 ---
 
 ### discrepancy-check
-- **パス**: `agents/05_discrepancy-check/`
+- **パス**: `agents/06_discrepancy-check/`
 - **専門領域**: Excel / Figma / 差分チェック / レポート生成
 - **得意なこと**: 時刻表Excelデータの解析、FigmaデザインからのテキストデータJSON取得、ExcelとFigmaの照合・差分検出、Markdownレポート自動生成
 - **スキル**:

@@ -2,13 +2,14 @@
 
 ## エージェント構成
 
-| エージェント | 役割 | 専門領域 |
-|------------|------|---------|
-| **secretary** | オーケストレーター | プロジェクト管理・エージェント管理・ルーティング |
-| **reviewer** | レビュワー | PRレビュー・承認・マージ管理 |
-| sharepoint | 専門エージェント | SharePoint / SPFx / REST API |
-| frontend | 専門エージェント | HTML / CSS / JavaScript / UI/UX |
-| discrepancy-check | 専門エージェント | Excel / Figma 差分チェック・レポート生成 |
+| # | エージェント | 役割 | 専門領域 |
+|---|------------|------|---------|
+| 01 | **secretary** | オーケストレーター | プロジェクト管理・エージェント管理・ルーティング・知識結晶化 |
+| 02 | **reviewer** | レビュワー | PRレビュー・承認・マージ管理 |
+| 03 | designer | 専門エージェント | Web UI/UX / Figma / デザインシステム / Awwwards 基準 |
+| 04 | sharepoint | 専門エージェント | SharePoint / SPFx / REST API / Power Automate / ScriptLoader |
+| 05 | frontend | 専門エージェント | HTML / CSS / JavaScript / アクセシビリティ / QA |
+| 06 | discrepancy-check | 専門エージェント | Excel / Figma 差分チェック・レポート生成 |
 
 ## フォルダ構成
 
@@ -29,7 +30,17 @@ AkaMaCorp/
 │   │   └── skills/
 │   │       ├── review-pr/            ← PRレビュー・承認・差し戻し
 │   │       └── merge-pr/             ← 承認済みPRのマージ
-│   ├── 03_sharepoint/                ← SharePoint 専門エージェント
+│   ├── 03_designer/                  ← デザイン専門エージェント（Web UI/UX）
+│   │   ├── CLAUDE.md
+│   │   └── skills/
+│   │       ├── design-standards/     ← ベンチマーク基準・AI制作回避チェックリスト
+│   │       ├── design-craft/         ← プロ品質UIテクニック集（タイポ・ボーダー等）
+│   │       ├── wireframe/            ← ワイヤーフレーム・情報設計・プロトタイプ
+│   │       ├── ux-review/            ← UX 評価・ヒューリスティック分析
+│   │       ├── brand-guide/          ← デザイントークン・ブランドガイドライン
+│   │       ├── design-handoff/       ← 開発向けデザイン仕様書作成
+│   │       └── figma-design/         ← Figma MCP 連携・デザイン制作
+│   ├── 04_sharepoint/                ← SharePoint 専門エージェント
 │   │   ├── CLAUDE.md
 │   │   └── skills/
 │   │       ├── spfx-component/       ← SPFx Web パーツ・拡張機能
@@ -39,7 +50,7 @@ AkaMaCorp/
 │   │       ├── power-automate-tips/  ← Power Automate フロー設計
 │   │       ├── sp-permissions/       ← 権限・アクセス管理
 │   │       └── sp-html-viewer/       ← sp-html-viewer 向け HTML
-│   ├── 04_frontend/                  ← フロントエンド専門エージェント
+│   ├── 05_frontend/                  ← フロントエンド専門エージェント
 │   │   ├── CLAUDE.md
 │   │   └── skills/
 │   │       ├── ui-component/         ← 再利用可能コンポーネント
@@ -48,7 +59,7 @@ AkaMaCorp/
 │   │       ├── design-system/        ← デザイントークン標準化
 │   │       ├── a11y-check/           ← WCAG アクセシビリティ
 │   │       └── qa-check/             ← QA: 動作確認・バグ修正・リグレッションテスト
-│   └── 05_discrepancy-check/         ← 差分チェック専門エージェント
+│   └── 06_discrepancy-check/         ← 差分チェック専門エージェント
 │       ├── CLAUDE.md
 │       └── skills/
 │           ├── excel-parse/          ← ExcelデータをJSON抽出
@@ -77,7 +88,7 @@ AkaMaCorp/
     ↓ ユーザー確認
 [PLAN]    secretary: アーキテクチャ・テスト計画を確定
     ↓ ユーザー承認
-[BUILD]   sharepoint / frontend: 実装 → PR 作成
+[BUILD]   designer / sharepoint / frontend: デザイン・実装 → PR 作成
     ↓
 [REVIEW]  reviewer: コードレビュー → 承認 or 差し戻し
     ↓ 承認
@@ -96,9 +107,19 @@ AkaMaCorp/
 | 大（新エージェント・設計変更） | 全フェーズ + ユーザー承認チェックポイント |
 
 ### エージェントの追加
-1. `agents/<エージェント名>/` にディレクトリを作成
+1. `agents/<番号>_<エージェント名>/` にディレクトリを作成
 2. `CLAUDE.md` と `skills/<スキル名>/SKILL.md` を作成
-3. `agents/secretary/agent-registry.md` に登録
+3. `agents/01_secretary/agent-registry.md` に登録
+4. `README.md` のエージェント構成表・フォルダ構成を更新
 
 ## スキルの更新
 skill-creator スキルを使うことで、テスト・評価・改善のサイクルを回せます。
+
+## デザイン品質基準
+
+03_designer は以下をベンチマークとして採用:
+- **CSS Design Awards / Awwwards** — Web サイトのビジュアル・インタラクション基準
+- **Apple HIG** — UI コンポーネント・空間デザイン基準
+- **Google Material Design 3** — コンポーネント・カラーシステム基準
+
+詳細は `agents/03_designer/skills/design-standards/SKILL.md` を参照。
