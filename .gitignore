@@ -3,6 +3,10 @@
 .obsidian/workspace-mobile.json
 .obsidian/plugins/obsidian-git/data.json
 
+# Obsidian 自動生成ファイル（意図せず作成される空ファイル）
+無題のファイル.canvas
+無題のファイル.base
+
 # OS
 .DS_Store
 Thumbs.db
