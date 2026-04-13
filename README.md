@@ -1,15 +1,22 @@
 # AkaMaCorp
 
+NFD（育成優先型開発）に基づくAIエージェント組織 + Obsidian ナレッジベース。
+
+---
+
 ## エージェント構成
 
 | # | エージェント | 役割 | 専門領域 |
 |---|------------|------|---------|
 | 01 | **secretary** | オーケストレーター | プロジェクト管理・エージェント管理・ルーティング・知識結晶化 |
 | 02 | **reviewer** | レビュワー | PRレビュー・承認・マージ管理 |
-| 03 | designer | 専門エージェント | Web UI/UX / Figma / デザインシステム / Awwwards 基準 |
-| 04 | sharepoint | 専門エージェント | SharePoint / SPFx / REST API / Power Automate / ScriptLoader |
-| 05 | frontend | 専門エージェント | HTML / CSS / JavaScript / アクセシビリティ / QA |
-| 06 | discrepancy-check | 専門エージェント | Excel / Figma 差分チェック・レポート生成 |
+| 03 | **obsidian** | 専門エージェント | Obsidian Vault管理・デイリーノート・ナレッジ記録・Bases/Canvas |
+| 04 | designer | 専門エージェント | Web UI/UX / Figma / デザインシステム / Awwwards 基準 |
+| 05 | sharepoint | 専門エージェント | SharePoint / SPFx / REST API / Power Automate / ScriptLoader |
+| 06 | frontend | 専門エージェント | HTML / CSS / JavaScript / アクセシビリティ / QA |
+| 07 | discrepancy-check | 専門エージェント | Excel / Figma 差分チェック・レポート生成 |
+
+---
 
 ## フォルダ構成
 
@@ -30,7 +37,10 @@ AkaMaCorp/
 │   │   └── skills/
 │   │       ├── review-pr/            ← PRレビュー・承認・差し戻し
 │   │       └── merge-pr/             ← 承認済みPRのマージ
-│   ├── 03_designer/                  ← デザイン専門エージェント（Web UI/UX）
+│   ├── 03_obsidian/                  ← Obsidianエージェント（Vault・ナレッジ管理）
+│   │   ├── CLAUDE.md
+│   │   └── skills/                   ← obsidian-skills プラグインを使用
+│   ├── 04_designer/                  ← デザイン専門エージェント（Web UI/UX）
 │   │   ├── CLAUDE.md
 │   │   └── skills/
 │   │       ├── design-standards/     ← ベンチマーク基準・AI制作回避チェックリスト
@@ -40,7 +50,7 @@ AkaMaCorp/
 │   │       ├── brand-guide/          ← デザイントークン・ブランドガイドライン
 │   │       ├── design-handoff/       ← 開発向けデザイン仕様書作成
 │   │       └── figma-design/         ← Figma MCP 連携・デザイン制作
-│   ├── 04_sharepoint/                ← SharePoint 専門エージェント
+│   ├── 05_sharepoint/                ← SharePoint 専門エージェント
 │   │   ├── CLAUDE.md
 │   │   └── skills/
 │   │       ├── spfx-component/       ← SPFx Web パーツ・拡張機能
@@ -50,7 +60,7 @@ AkaMaCorp/
 │   │       ├── power-automate-tips/  ← Power Automate フロー設計
 │   │       ├── sp-permissions/       ← 権限・アクセス管理
 │   │       └── sp-html-viewer/       ← sp-html-viewer 向け HTML
-│   ├── 05_frontend/                  ← フロントエンド専門エージェント
+│   ├── 06_frontend/                  ← フロントエンド専門エージェント
 │   │   ├── CLAUDE.md
 │   │   └── skills/
 │   │       ├── ui-component/         ← 再利用可能コンポーネント
@@ -59,7 +69,7 @@ AkaMaCorp/
 │   │       ├── design-system/        ← デザイントークン標準化
 │   │       ├── a11y-check/           ← WCAG アクセシビリティ
 │   │       └── qa-check/             ← QA: 動作確認・バグ修正・リグレッションテスト
-│   └── 06_discrepancy-check/         ← 差分チェック専門エージェント
+│   └── 07_discrepancy-check/         ← 差分チェック専門エージェント
 │       ├── CLAUDE.md
 │       └── skills/
 │           ├── excel-parse/          ← ExcelデータをJSON抽出
@@ -67,15 +77,19 @@ AkaMaCorp/
 │           ├── diff-check/           ← ExcelとFigmaの照合・差分検出
 │           └── report-gen/           ← 差分レポートMarkdown出力
 ├── memory/                           ← エクスペリエンス層（NFD）
-│   ├── README.md                     ← 使い方説明
-│   ├── insights.md                   ← 洞察・発見ログ
-│   ├── error-patterns.md             ← エラー・失敗パターン
+│   ├── dashboard.md                  ← Dataviewナレッジダッシュボード
 │   ├── daily/                        ← 日次ログ（YYYY-MM-DD.md）
-│   └── crystallization/              ← 結晶化チェックポイント記録
+│   ├── insights/                     ← 個別インサイトファイル
+│   ├── errors/                       ← 個別エラーファイル
+│   ├── crystallization/              ← 結晶化チェックポイント記録
+│   └── templates/                    ← daily / insight / error テンプレート
 ├── projects/                         ← プロジェクト管理ファイル
-├── SPRINT-FLOW.md                    ← スプリントフロー定義（gstack準拠）
+├── CLAUDE.md                         ← Claude Code 常時コンテキスト
+├── SPRINT-FLOW.md                    ← スプリントフロー定義
 └── README.md
 ```
+
+---
 
 ## スプリントフロー
 
@@ -96,30 +110,44 @@ AkaMaCorp/
     ↓ 合格
 [SHIP]    reviewer: マージ → secretary: ドキュメント更新
     ↓
-[REFLECT] secretary: 振り返り・知識結晶化
+[REFLECT] secretary + obsidian: 振り返り・知識結晶化
 ```
 
 ### タスク規模別の省略ルール
+
 | 規模 | 必須フェーズ |
 |------|------------|
 | 小（バグ修正・1 ファイル） | BUILD → REVIEW → SHIP |
 | 中（新機能・複数ファイル） | THINK → PLAN → BUILD → REVIEW → QA → SHIP |
 | 大（新エージェント・設計変更） | 全フェーズ + ユーザー承認チェックポイント |
 
-### エージェントの追加
-1. `agents/<番号>_<エージェント名>/` にディレクトリを作成
-2. `CLAUDE.md` と `skills/<スキル名>/SKILL.md` を作成
-3. `agents/01_secretary/agent-registry.md` に登録
-4. `README.md` のエージェント構成表・フォルダ構成を更新
+---
+
+## エージェントの追加・変更ルール
+
+エージェントを追加・変更したときは、**以下を必ずセットで更新する**:
+
+1. `agents/<番号>_<エージェント名>/CLAUDE.md` を作成・編集
+2. `agents/01_secretary/agent-registry.md` に登録・更新
+3. `CLAUDE.md` のエージェント構成表を更新
+4. **この `README.md` のエージェント構成表・フォルダ構成を更新** ← 必須
+
+---
 
 ## スキルの更新
-skill-creator スキルを使うことで、テスト・評価・改善のサイクルを回せます。
+
+`skill-creator` スキルを使うことで、テスト・評価・改善のサイクルを回せます。
+
+Obsidianエージェントは `obsidian-skills` プラグイン（obsidian-cli / obsidian-markdown / obsidian-bases / json-canvas / defuddle）と、AkaMaCorp Vault 専用の `obsidian:obsidian-agent` スキルを使用します。
+
+---
 
 ## デザイン品質基準
 
-03_designer は以下をベンチマークとして採用:
+04_designer は以下をベンチマークとして採用:
+
 - **CSS Design Awards / Awwwards** — Web サイトのビジュアル・インタラクション基準
 - **Apple HIG** — UI コンポーネント・空間デザイン基準
 - **Google Material Design 3** — コンポーネント・カラーシステム基準
 
-詳細は `agents/03_designer/skills/design-standards/SKILL.md` を参照。
+詳細は `agents/04_designer/skills/design-standards/SKILL.md` を参照。
