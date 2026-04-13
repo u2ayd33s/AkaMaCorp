@@ -35,7 +35,7 @@ phase: [BUILD, QA]
 
 ## デザイナーエージェントとの連携
 
-[[03_designer/CLAUDE|デザイナーエージェント]] からデザインハンドオフを受け取り実装する。
+[[04_designer/CLAUDE|デザイナーエージェント]] からデザインハンドオフを受け取り実装する。
 
 ## 前提知識
 - HTML5 / CSS3 / JavaScript (ES6+)

@@ -14,10 +14,11 @@ Obsidian Vault として管理し、Claude Code で編集する。
 |---|------------|------|
 | 01 | [[01_secretary/CLAUDE\|secretary]] | オーケストレーター・知識結晶化 |
 | 02 | [[02_reviewer/CLAUDE\|reviewer]] | PRレビュー・マージ管理 |
-| 03 | [[03_designer/CLAUDE\|designer]] | Web UI/UX・Figma |
-| 04 | [[04_sharepoint/CLAUDE\|sharepoint]] | SharePoint・ScriptLoader・REST API |
-| 05 | [[05_frontend/CLAUDE\|frontend]] | HTML/CSS/JS・QA |
-| 06 | [[06_discrepancy-check/CLAUDE\|discrepancy-check]] | Excel/Figma差分チェック |
+| 03 | [[03_obsidian/CLAUDE\|obsidian]] | Obsidian・ナレッジ管理 |
+| 04 | [[04_designer/CLAUDE\|designer]] | Web UI/UX・Figma |
+| 05 | [[05_sharepoint/CLAUDE\|sharepoint]] | SharePoint・ScriptLoader・REST API |
+| 06 | [[06_frontend/CLAUDE\|frontend]] | HTML/CSS/JS・QA |
+| 07 | [[07_discrepancy-check/CLAUDE\|discrepancy-check]] | Excel/Figma差分チェック |
 
 ## memory/ の使い方
 - [[dashboard]] — ナレッジダッシュボード（INSIGHT/ERROR/デイリーログ一覧）

@@ -36,7 +36,22 @@ tags: [registry, agents]
 
 ---
 
-### [[03_designer/CLAUDE|designer]]
+### [[03_obsidian/CLAUDE|obsidian]]
+- **専門領域**: Obsidian Vault 管理 / デイリーノート / ナレッジ記録 / Bases / Canvas / Webコンテンツ取込
+- **得意なこと**: AkaMaCorp Vault へのノート作成・追記・検索、DECISION/INSIGHT/ERROR の記録、`.base` / `.canvas` ファイル作成、セッション終了時のルーティン実行
+- **スキル**:
+  | スキル | 概要 |
+  |--------|------|
+  | `obsidian:obsidian-agent` | Vault全体の操作・記録オーケストレーション（AkaMaCorp専用） |
+  | `obsidian:obsidian-cli` | ノート作成・読込・追記・検索（Obsidian CLIコマンド） |
+  | `obsidian:obsidian-markdown` | Obsidian記法（wikilink・callout・frontmatter）での正確な記述 |
+  | `obsidian:obsidian-bases` | `.base` ファイルでデータベースビューを構築 |
+  | `obsidian:json-canvas` | `.canvas` ファイルでマインドマップ・フロー図を作成 |
+  | `obsidian:defuddle` | Webページをクリーンなmarkdownに変換してVaultへ保存 |
+
+---
+
+### [[04_designer/CLAUDE|designer]]
 - **専門領域**: Web UI/UX デザイン / Figma / ワイヤーフレーム / デザインシステム / ブランドガイドライン / デザインハンドオフ
 - **得意なこと**: ワイヤーフレーム・プロトタイプ設計、Figma デザイン制作・管理、UX 評価・改善提案、デザイントークン体系化、開発向けデザイン仕様書作成
 - **スキル**:
@@ -52,7 +67,7 @@ tags: [registry, agents]
 
 ---
 
-### [[04_sharepoint/CLAUDE|sharepoint]]
+### [[05_sharepoint/CLAUDE|sharepoint]]
 - **専門領域**: SharePoint Online / SPFx / REST API / Microsoft Graph / Power Automate / 権限管理 / sp-html-viewer
 - **得意なこと**: SPFx Web パーツ・拡張機能の開発、SharePoint REST API 実装、Graph API 活用、Power Automate フロー設計、権限・アクセス管理、sp-html-viewer 向け HTML 作成
 - **スキル**:
@@ -68,7 +83,7 @@ tags: [registry, agents]
 
 ---
 
-### [[05_frontend/CLAUDE|frontend]]
+### [[06_frontend/CLAUDE|frontend]]
 - **専門領域**: HTML / CSS / JavaScript / UI/UX / レスポンシブデザイン / Figma / デザインシステム / アクセシビリティ
 - **得意なこと**: UI コンポーネント生成、CSS レイアウト設計、Figma デザインのコード化、デザイントークン設計、WCAG 対応
 - **スキル**:
@@ -83,7 +98,7 @@ tags: [registry, agents]
 
 ---
 
-### [[06_discrepancy-check/CLAUDE|discrepancy-check]]
+### [[07_discrepancy-check/CLAUDE|discrepancy-check]]
 - **専門領域**: Excel / Figma / 差分チェック / レポート生成
 - **得意なこと**: 時刻表Excelデータの解析、FigmaデザインからのテキストデータJSON取得、ExcelとFigmaの照合・差分検出、Markdownレポート自動生成
 - **スキル**:
@@ -102,4 +117,4 @@ tags: [registry, agents]
 2. `CLAUDE.md` にエージェントの役割・スキルを定義
 3. `skills/<スキル名>/SKILL.md` を作成
 4. このファイル (`agent-registry.md`) に追記
-5. [[README]] のエージェント構成表を更新
+5. [[CLAUDE|Vault CLAUDE.md]] のエージェント構成表を更新
