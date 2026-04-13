@@ -1,9 +1,11 @@
 ---
 date: {{date:YYYY-MM-DD}}
-type: error
+type: エラー
 title: 
-tags: [error]
-status: open
+tags:
+  - エラー
+agents: []
+status: 未解決
 ---
 
 ## 何が起きたか

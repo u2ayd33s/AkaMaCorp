@@ -2,8 +2,8 @@
 date: 2026-03-16
 type: insight
 title: 番号プレフィックスによるエージェント順序の明確化
-tags: [insight, agent-design]
-status: pending
+tags: [インサイト, agent-design]
+status: 保留中
 crystallization-target: エージェント追加ガイドライン
 ---
 

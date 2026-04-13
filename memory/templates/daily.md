@@ -1,6 +1,8 @@
 ---
 date: {{date:YYYY-MM-DD}}
-tags: [daily]
+tags:
+  - デイリー
+agents: []
 insight-count: 0
 error-count: 0
 decision-count: 0
@@ -10,22 +12,31 @@ decision-count: 0
 
 <!--
 タグ体系:
-[DECISION] 行った決断・選択とその理由
-[INSIGHT]  重要な気づき・発見・パターン認識
-[ERROR]    失敗・ミス・誤解とその修正原則
-[PATTERN]  繰り返し見られる行動・要求パターン
+[決断]       行った決断・選択とその理由
+[インサイト]  重要な気づき・発見・パターン認識
+[エラー]      失敗・ミス・誤解とその修正原則
+[パターン]    繰り返し見られる行動・要求パターン
+
+担当エージェント（agentsフィールドに記載）:
+01_secretary / 02_reviewer / 03_designer / 04_sharepoint / 05_frontend / 06_discrepancy-check
 -->
+
+### 担当エージェント
+
+| エージェント | 担当内容 |
+|------------|--------|
+|            |        |
 
 ### 作業サマリー
 
 
 ---
 
-### [DECISION] 
+### [決断] 
 
 
-### [INSIGHT] 
+### [インサイト] 
 
 
-### [ERROR] 
+### [エラー] 
 

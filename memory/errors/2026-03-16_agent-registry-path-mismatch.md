@@ -2,8 +2,8 @@
 date: 2026-03-16
 type: error
 title: agent-registry のパス記述がファイルシステムと乖離
-tags: [error, agent-registry, maintenance]
-status: resolved
+tags: [エラー, agent-registry, maintenance]
+status: 解決済み
 ---
 
 ## 何が起きたか

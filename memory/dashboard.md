@@ -8,41 +8,41 @@ tags: [dashboard]
 
 ---
 
-## INSIGHT — 結晶化待ち
+## インサイト — 結晶化待ち
 
 ```dataview
-TABLE date AS "日付", title AS "タイトル", crystallization-target AS "結晶化先"
+TABLE date AS "日付", title AS "タイトル", crystallization-target AS "結晶化先", agents AS "担当"
 FROM "memory/insights"
-WHERE status = "pending"
+WHERE status = "保留中"
 SORT date DESC
 ```
 
-## INSIGHT — 結晶化済み
+## インサイト — 結晶化済み
 
 ```dataview
-TABLE date AS "日付", title AS "タイトル"
+TABLE date AS "日付", title AS "タイトル", agents AS "担当"
 FROM "memory/insights"
-WHERE status = "crystallized"
+WHERE status = "結晶化済み"
 SORT date DESC
 ```
 
 ---
 
-## ERROR — 未解決
+## エラー — 未解決
 
 ```dataview
-TABLE date AS "日付", title AS "タイトル"
+TABLE date AS "日付", title AS "タイトル", agents AS "担当"
 FROM "memory/errors"
-WHERE status != "resolved"
+WHERE status != "解決済み"
 SORT date DESC
 ```
 
-## ERROR — 解決済み
+## エラー — 解決済み
 
 ```dataview
-TABLE date AS "日付", title AS "タイトル"
+TABLE date AS "日付", title AS "タイトル", agents AS "担当"
 FROM "memory/errors"
-WHERE status = "resolved"
+WHERE status = "解決済み"
 SORT date DESC
 ```
 
@@ -51,7 +51,7 @@ SORT date DESC
 ## デイリーログ一覧
 
 ```dataview
-TABLE insight-count AS "INSIGHT数", error-count AS "ERROR数", decision-count AS "DECISION数"
+TABLE insight-count AS "インサイト数", error-count AS "エラー数", decision-count AS "決断数", agents AS "担当エージェント"
 FROM "memory/daily"
 SORT file.name DESC
 ```

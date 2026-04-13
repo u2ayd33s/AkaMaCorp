@@ -1,9 +1,11 @@
 ---
 date: {{date:YYYY-MM-DD}}
-type: insight
+type: インサイト
 title: 
-tags: [insight]
-status: pending
+tags:
+  - インサイト
+agents: []
+status: 保留中
 crystallization-target: 
 ---
 
