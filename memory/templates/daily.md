@@ -1,6 +1,9 @@
 ---
 date: {{date:YYYY-MM-DD}}
 tags: [daily]
+insight-count: 0
+error-count: 0
+decision-count: 0
 ---
 
 ## {{date:YYYY-MM-DD}}
