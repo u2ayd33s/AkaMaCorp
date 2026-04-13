@@ -1,23 +1,29 @@
+---
+tags: [vault, claude-code-context]
+---
+
 # AkaMaCorp Vault — Claude Code コンテキスト
 
 ## このVaultについて
 AkaMaCorp は NFD（育成優先型開発）に基づくAIエージェント組織 + ナレッジベース。
 Obsidian Vault として管理し、Claude Code で編集する。
+全体フロー: [[SPRINT-FLOW]] / 全エージェント: [[agent-registry]]
 
 ## エージェント構成
 | # | エージェント | 役割 |
 |---|------------|------|
-| 01 | secretary | オーケストレーター・知識結晶化 |
-| 02 | reviewer | PRレビュー・マージ管理 |
-| 03 | designer | Web UI/UX・Figma |
-| 04 | sharepoint | SharePoint・ScriptLoader・REST API |
-| 05 | frontend | HTML/CSS/JS・QA |
-| 06 | discrepancy-check | Excel/Figma差分チェック |
+| 01 | [[01_secretary/CLAUDE\|secretary]] | オーケストレーター・知識結晶化 |
+| 02 | [[02_reviewer/CLAUDE\|reviewer]] | PRレビュー・マージ管理 |
+| 03 | [[03_designer/CLAUDE\|designer]] | Web UI/UX・Figma |
+| 04 | [[04_sharepoint/CLAUDE\|sharepoint]] | SharePoint・ScriptLoader・REST API |
+| 05 | [[05_frontend/CLAUDE\|frontend]] | HTML/CSS/JS・QA |
+| 06 | [[06_discrepancy-check/CLAUDE\|discrepancy-check]] | Excel/Figma差分チェック |
 
 ## memory/ の使い方
-- `memory/daily/YYYY-MM-DD.md` — 日次ログ（タグ: DECISION/INSIGHT/ERROR/PATTERN）
-- `memory/insights.md` — 結晶化候補の洞察リスト
-- `memory/error-patterns.md` — 失敗パターン記録
+- [[dashboard]] — ナレッジダッシュボード（INSIGHT/ERROR/デイリーログ一覧）
+- `memory/daily/YYYY-MM-DD.md` — 日次ログ（DECISION/INSIGHT/ERROR/PATTERN）
+- `memory/insights/` — 個別INSIGHTファイル
+- `memory/errors/` — 個別ERRORファイル
 - `memory/crystallization/` — 結晶化チェックポイント
 - `memory/templates/` — Obsidianテンプレート置き場
 

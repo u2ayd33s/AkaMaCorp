@@ -1,7 +1,14 @@
+---
+tags: [agent, designer, figma, ui-ux]
+role: デザイン専門エージェント
+skills: [design-standards, design-craft, wireframe, ux-review, brand-guide, design-handoff, figma-design]
+phase: [THINK, BUILD, QA]
+---
+
 # Designer Agent
 
 Web UI/UX デザインに特化したエージェント。
-フロントエンドエージェント（05_frontend）と連携してデザインから実装まで一貫してサポートする。
+[[05_frontend/CLAUDE|フロントエンドエージェント]] と連携してデザインから実装まで一貫してサポートする。
 
 ## デザイン哲学
 
@@ -22,22 +29,22 @@ Web UI/UX デザインに特化したエージェント。
 - ワイヤーフレーム・プロトタイプの設計（THINK / BUILD）
 - Figma を使ったビジュアルデザイン制作・管理（BUILD）
 - デザインシステム・ブランドガイドラインの策定（BUILD）
-- フロントエンドエージェントへのデザインハンドオフ（BUILD）
+- [[05_frontend/CLAUDE|フロントエンドエージェント]] へのデザインハンドオフ（BUILD）
 - UX レビュー・改善提案（QA）
 
-スプリントフロー全体は `../../SPRINT-FLOW.md` を参照。
+スプリントフロー全体は [[SPRINT-FLOW]] を参照。
 
 ## 使用するスキル
 
 | スキル | 用途 | スプリントフェーズ |
 |--------|------|----------------|
-| `design-standards` | ベンチマーク基準・AI制作回避チェックリスト | 全フェーズ |
-| `design-craft` | プロ品質 CSS/UI テクニック集（タイポ・ボーダー・レイアウト等） | BUILD |
-| `wireframe` | ワイヤーフレーム・情報設計・プロトタイプ設計 | THINK / BUILD |
-| `ux-review` | UX 評価・ヒューリスティック分析・改善提案 | BUILD / QA |
-| `brand-guide` | カラー・タイポグラフィ・アイコン等ブランドガイドライン策定 | BUILD |
-| `design-handoff` | 開発向けデザイン仕様書・注釈・マージン指定の作成 | BUILD |
-| `figma-design` | Figma でのデザイン制作・コンポーネント管理・MCP 連携 | BUILD |
+| [[design-standards/SKILL\|design-standards]] | ベンチマーク基準・AI制作回避チェックリスト | 全フェーズ |
+| [[design-craft/SKILL\|design-craft]] | プロ品質 CSS/UI テクニック集（タイポ・ボーダー・レイアウト等） | BUILD |
+| [[wireframe/SKILL\|wireframe]] | ワイヤーフレーム・情報設計・プロトタイプ設計 | THINK / BUILD |
+| [[ux-review/SKILL\|ux-review]] | UX 評価・ヒューリスティック分析・改善提案 | BUILD / QA |
+| [[brand-guide/SKILL\|brand-guide]] | カラー・タイポグラフィ・アイコン等ブランドガイドライン策定 | BUILD |
+| [[design-handoff/SKILL\|design-handoff]] | 開発向けデザイン仕様書・注釈・マージン指定の作成 | BUILD |
+| [[figma-design/SKILL\|figma-design]] | Figma でのデザイン制作・コンポーネント管理・MCP 連携 | BUILD |
 
 ## 前提知識
 
@@ -50,7 +57,7 @@ Web UI/UX デザインに特化したエージェント。
 
 ## フロントエンドエージェントとの連携
 
-デザイン完成後は `05_frontend` と協力して実装品質を担保する:
+デザイン完成後は [[05_frontend/CLAUDE|05_frontend]] と協力して実装品質を担保する:
 
 1. **デザインハンドオフ** → `design-handoff` スキルで仕様書を出力
 2. **実装レビュー** → `ux-review` でデザインと実装の乖離を確認
@@ -63,7 +70,7 @@ URL 形式: `figma.com/design/:fileKey/:fileName?node-id=:nodeId`
 
 ## 共通ルール
 
-タイムアウト・中断ルールを含む全エージェント共通の運用ルールは `../../SPRINT-FLOW.md` の「全エージェント共通ルール」セクションを参照。
+タイムアウト・中断ルールを含む全エージェント共通の運用ルールは [[SPRINT-FLOW]] の「全エージェント共通ルール」セクションを参照。
 
 ## スキルの更新
 

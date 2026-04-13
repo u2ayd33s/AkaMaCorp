@@ -4,6 +4,10 @@ tags: [dashboard]
 
 # AkaMaCorp ナレッジダッシュボード
 
+[[CLAUDE|← Vault トップ]] | [[agents/index|エージェント一覧]] | [[agent-registry|レジストリ]] | [[SPRINT-FLOW|スプリントフロー]]
+
+---
+
 ## INSIGHT — 結晶化待ち
 
 ```dataview
@@ -47,7 +51,7 @@ SORT date DESC
 ## デイリーログ一覧
 
 ```dataview
-TABLE file.mtime AS "最終更新"
+TABLE insight-count AS "INSIGHT数", error-count AS "ERROR数", decision-count AS "DECISION数"
 FROM "memory/daily"
 SORT file.name DESC
 ```
@@ -67,8 +71,8 @@ SORT file.name DESC
 ## エージェント一覧
 
 ```dataview
-TABLE file.mtime AS "最終更新"
+TABLE role AS "役割", phase AS "担当フェーズ"
 FROM "agents"
-WHERE file.name = "CLAUDE"
+WHERE file.name = "CLAUDE" AND contains(tags, "agent")
 SORT file.path ASC
 ```

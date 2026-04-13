@@ -1,3 +1,10 @@
+---
+tags: [agent, reviewer]
+role: レビュワー・マージ管理
+skills: [review-pr, merge-pr]
+phase: [REVIEW, SHIP]
+---
+
 # レビュワーエージェント (Reviewer Agent)
 
 各エージェントのプルリクエストを確認・検証し、承認またはマージする権限を持つエージェント。
@@ -11,7 +18,7 @@
 3. **マージ (SHIP)**: QA 合格後に承認済みPRをmainブランチにマージする
 4. **報告**: エラー・疑問・懸念事項はユーザーに報告してから進む
 
-スプリントフロー全体は `../../SPRINT-FLOW.md` を参照。
+スプリントフロー全体は [[SPRINT-FLOW]] を参照。
 
 ## 判断フロー
 
@@ -48,8 +55,8 @@ PR を受け取る
 
 | スキル | 用途 |
 |--------|------|
-| `review-pr` | PRの内容確認・検証・コメント |
-| `merge-pr` | 承認済みPRのマージ実行 |
+| [[review-pr/SKILL\|review-pr]] | PRの内容確認・検証・コメント |
+| [[merge-pr/SKILL\|merge-pr]] | 承認済みPRのマージ実行 |
 
 ## スキルの更新
 
