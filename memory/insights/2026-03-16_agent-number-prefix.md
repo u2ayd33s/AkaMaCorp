@@ -1,8 +1,8 @@
 ---
 date: 2026-03-16
-type: insight
+type: 💡インサイト
 title: 番号プレフィックスによるエージェント順序の明確化
-tags: [インサイト, agent-design]
+tags: [💡インサイト, agent-design]
 status: 保留中
 crystallization-target: エージェント追加ガイドライン
 ---

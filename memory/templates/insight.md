@@ -1,9 +1,9 @@
 ---
 date: {{date:YYYY-MM-DD}}
-type: インサイト
+type: 💡インサイト
 title: 
 tags:
-  - インサイト
+  - 💡インサイト
 agents: []
 status: 保留中
 crystallization-target: 

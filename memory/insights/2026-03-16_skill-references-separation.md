@@ -1,8 +1,8 @@
 ---
 date: 2026-03-16
-type: insight
+type: 💡インサイト
 title: スキルの参照ファイル分離パターン
-tags: [インサイト, skill-design]
+tags: [💡インサイト, skill-design]
 status: 保留中
 crystallization-target: スキル設計ガイドライン
 ---

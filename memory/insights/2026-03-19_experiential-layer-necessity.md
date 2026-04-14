@@ -1,8 +1,8 @@
 ---
 date: 2026-03-19
-type: insight
+type: 💡インサイト
 title: 育成優先型開発のエクスペリエンス層の必要性
-tags: [インサイト, nfd, memory-layer]
+tags: [💡インサイト, nfd, memory-layer]
 status: 保留中
 crystallization-target: secretary CLAUDE.md にメモリ記録義務を追加
 ---

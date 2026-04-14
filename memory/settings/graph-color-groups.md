@@ -15,8 +15,8 @@ Obsidianを再インストールしたときや設定リセット後は、以下
 
 ```json
 "colorGroups": [
-  {"query": "tag:#エラー",                 "color": {"a": 1, "rgb": 15750485}},
-  {"query": "tag:#インサイト",             "color": {"a": 1, "rgb": 5025616}},
+  {"query": "tag:#💥エラー",               "color": {"a": 1, "rgb": 15750485}},
+  {"query": "tag:#💡インサイト",           "color": {"a": 1, "rgb": 5025616}},
   {"query": "path:memory/crystallization", "color": {"a": 1, "rgb": 10233776}},
   {"query": "path:memory/daily",           "color": {"a": 1, "rgb": 16757504}},
   {"query": "path:agents",                 "color": {"a": 1, "rgb": 2201331}},
@@ -29,8 +29,8 @@ Obsidianを再インストールしたときや設定リセット後は、以下
 
 | 優先 | クエリ | 色 | HEX |
 |------|--------|-----|-----|
-| 1 | `tag:#エラー` | 🔴 赤 | `#F05555` |
-| 2 | `tag:#インサイト` | 🟢 緑 | `#4CAF50` |
+| 1 | `tag:#💥エラー` | 🔴 赤 | `#F05555` |
+| 2 | `tag:#💡インサイト` | 🟢 緑 | `#4CAF50` |
 | 3 | `path:memory/crystallization` | 💜 紫 | `#9C27B0` |
 | 4 | `path:memory/daily` | 🟡 黄 | `#FFB300` |
 | 5 | `path:agents` | 🔵 青 | `#2196F3` |

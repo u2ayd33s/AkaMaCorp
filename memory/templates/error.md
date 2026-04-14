@@ -1,9 +1,9 @@
 ---
 date: {{date:YYYY-MM-DD}}
-type: エラー
+type: 💥エラー
 title: 
 tags:
-  - エラー
+  - 💥エラー
 agents: []
 status: 未解決
 ---
