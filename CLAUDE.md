@@ -20,6 +20,24 @@ Obsidian Vault として管理し、Claude Code で編集する。
 | 06 | [[06_frontend/CLAUDE\|frontend]] | HTML/CSS/JS・QA |
 | 07 | [[07_discrepancy-check/CLAUDE\|discrepancy-check]] | Excel/Figma差分チェック |
 
+## knowledge/ の使い方
+
+各プロジェクトに関するナレッジを格納する。エージェントは作業前に参照し、作業後に更新する。
+
+| パス | 内容 |
+|------|------|
+| `knowledge/_templates/` | ナレッジファイルのテンプレート |
+| `knowledge/[プロジェクト名]/INDEX.md` | プロジェクト概要・ナレッジ一覧 |
+| `knowledge/[プロジェクト名]/workflow.md` | 作業フロー・手順 |
+| `knowledge/[プロジェクト名]/csv-rules.md` | データ仕様・フォーマットルール |
+| `knowledge/[プロジェクト名]/errors.md` | エラー集・トラブルシューティング |
+| `knowledge/[プロジェクト名]/figma-structure.md` | Figmaノード構造（必要に応じて） |
+
+### ナレッジ運用ルール（全エージェント共通）
+1. **作業開始前**: 対象プロジェクトの `INDEX.md` → `errors.md` → `workflow.md` の順に読む
+2. **作業中に新事象が発生**: メモしておく
+3. **作業終了後**: 新しい知見・エラー・ルール変更を該当ファイルに追記し `updated` 日付を更新する
+
 ## memory/ の使い方
 - [[dashboard]] — ナレッジダッシュボード（INSIGHT/ERROR/デイリーログ一覧）
 - `memory/daily/YYYY-MM-DD.md` — 日次ログ（DECISION/INSIGHT/ERROR/PATTERN）
