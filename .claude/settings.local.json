@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/u2ayd/OneDrive - 業務ハックLab/personal-GitHub/MyCorp/AkaMaCorp/**)",
+      "Skill(commit-commands:commit)",
+      "Bash(git:*)"
+    ]
+  }
+}
