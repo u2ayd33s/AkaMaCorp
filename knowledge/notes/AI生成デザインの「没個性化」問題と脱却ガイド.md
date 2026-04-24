@@ -1,9 +1,11 @@
 ---
 date: {{date}}
 tags:
-  - agent/designer , agent/sharepoint
+  - agent/designer
+  - agent/sharepoint
   - type/📚reference
-  - project/
+  - project/sharepoint
+  - project/designer
 ---
 
 # AI生成デザインの「没個性化」問題と脱却ガイド
