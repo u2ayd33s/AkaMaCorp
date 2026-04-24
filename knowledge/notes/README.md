@@ -77,6 +77,8 @@ tags:
 |------|------------|
 | `project/chofu` | 調布駅バスサイネージ |
 | `project/toyota` | 豊田市サイネージ |
+| `project/SharePoint` | SharePoint |
+| `project/designer` | デザイン Web UI/UX・Figma |
 
 ---
 
