@@ -299,7 +299,7 @@ SharePoint が独自定義するセマンティック変数。SPFx / sp-html-vie
 ## 関連
 
 - [[agents/05_sharepoint/CLAUDE]]
-- [[agents/06_frontend/CLAUDE]]
+- [[agents/07_frontend/CLAUDE]]
 - [[agents/04_designer/CLAUDE]]
 - [[2026-04-30_SharePoint-sp-html-viewer]]
 - [[agents/05_sharepoint/skills/xsp-script-loader]]

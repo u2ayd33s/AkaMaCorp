@@ -17,8 +17,9 @@ Obsidian Vault として管理し、Claude Code で編集する。
 | 03 | [[03_obsidian/CLAUDE\|obsidian]] | Obsidian・ナレッジ管理 |
 | 04 | [[04_designer/CLAUDE\|designer]] | Web UI/UX・Figma |
 | 05 | [[05_sharepoint/CLAUDE\|sharepoint]] | SharePoint・ScriptLoader・REST API |
-| 06 | [[06_frontend/CLAUDE\|frontend]] | HTML/CSS/JS・QA |
-| 07 | [[07_discrepancy-check/CLAUDE\|discrepancy-check]] | Excel/Figma差分チェック |
+| 06 | [[06_SPFx/CLAUDE\|spfx]] | SPFx Web パーツ・拡張機能・App Catalog |
+| 07 | [[07_frontend/CLAUDE\|frontend]] | HTML/CSS/JS・QA |
+| 08 | [[08_discrepancy-check/CLAUDE\|discrepancy-check]] | Excel/Figma差分チェック |
 
 ## knowledge/ の使い方
 

@@ -83,7 +83,20 @@ tags: [registry, agents]
 
 ---
 
-### [[06_frontend/CLAUDE|frontend]]
+### [[06_SPFx/CLAUDE|spfx]]
+- **専門領域**: SharePoint Framework / TypeScript / React / Fluent UI v9 / PnPjs / App Catalog / Gulp / webpack
+- **得意なこと**: SPFx プロジェクトのスキャフォールド、Web パーツ・拡張機能の実装、App Catalog デプロイ、Jest テスト生成
+- **スキル**:
+  | スキル | 概要 |
+  |--------|------|
+  | [[spfx-scaffold/SKILL\|spfx-scaffold]] | Yeoman によるプロジェクト雛形生成・環境初期設定 |
+  | [[spfx-component/SKILL\|spfx-component]] | Web パーツ・拡張機能のコンポーネント実装（React / Fluent UI v9） |
+  | [[spfx-deploy/SKILL\|spfx-deploy]] | gulp bundle --ship / gulp package-solution --ship / App Catalog アップロード |
+  | [[spfx-test/SKILL\|spfx-test]] | Jest ユニットテスト・Playwright E2E テスト設計 |
+
+---
+
+### [[07_frontend/CLAUDE|frontend]]
 - **専門領域**: HTML / CSS / JavaScript / UI/UX / レスポンシブデザイン / Figma / デザインシステム / アクセシビリティ
 - **得意なこと**: UI コンポーネント生成、CSS レイアウト設計、Figma デザインのコード化、デザイントークン設計、WCAG 対応
 - **スキル**:
@@ -98,7 +111,7 @@ tags: [registry, agents]
 
 ---
 
-### [[07_discrepancy-check/CLAUDE|discrepancy-check]]
+### [[08_discrepancy-check/CLAUDE|discrepancy-check]]
 - **専門領域**: Excel / Figma / 差分チェック / レポート生成
 - **得意なこと**: 時刻表Excelデータの解析、FigmaデザインからのテキストデータJSON取得、ExcelとFigmaの照合・差分検出、Markdownレポート自動生成
 - **スキル**:

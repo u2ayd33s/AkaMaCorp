@@ -287,7 +287,7 @@ ALL-CAPS ラベル, glow, shadcn 既定値
 
 ### エージェント
 - [[agents/04_designer/CLAUDE|04_designer]] — デザイン担当エージェント（このナレッジの主要読者）
-- [[agents/06_frontend/CLAUDE|06_frontend]] — フロントエンド実装担当
+- [[agents/07_frontend/CLAUDE|07_frontend]] — フロントエンド実装担当
 
 ### スキル
 - [[design-standards/SKILL|design-standards]] — AI制作回避チェックリスト・ベンチマーク基準
