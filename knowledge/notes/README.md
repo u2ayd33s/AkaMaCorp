@@ -1,5 +1,5 @@
 ---
-date: 2026-04-24
+date: 2026-05-03
 tags: [knowledge, readme]
 ---
 
@@ -7,6 +7,33 @@ tags: [knowledge, readme]
 
 個人・エージェント共通のナレッジを一元管理するフォルダ。
 プロジェクト横断で再利用できる知識を蓄積する。
+
+---
+
+## ファイル一覧（静的）
+
+### SharePoint
+
+| ファイル | date | タグ | 内容 |
+|---------|------|------|------|
+| [[Graph vs sharepoint rest api]] | 2026-04-24 | 📚reference | Graph API と SharePoint REST API の使い分け |
+| [[SharePointページコメントREST-API]] | 2026-04-24 | 📚reference | コメント取得・投稿の REST API 仕様 |
+| [[SharePoint-REST-API-フィールド一覧]] | 2026-04-24 | 📚reference | リスト/ライブラリで取得できるフィールド一覧 |
+| [[SharePointページ・ニュース一括再公開マニュアル]] | 2026-04-30 | 📖how-to | PnP PowerShell による一括再公開手順 |
+| [[SharePoint一括再公開マニュアル]] | 2026-04-30 | 📖how-to | 同上・詳細スクリプト付き完全版（実績：267ページ/6分） |
+
+### Fluent UI / デザイントークン
+
+| ファイル | date | タグ | 内容 |
+|---------|------|------|------|
+| [[SharePoint-FluentUI-DesignTokens]] | 2026-04-30 | 📚reference | SharePoint Fluent UI v3 デザイントークン一覧 |
+| [[SharePoint-FluentUI-CSS変数リファレンス]] | 2026-04-30 | 📚reference | CSS変数の完全リファレンス |
+
+### デザイン
+
+| ファイル | date | タグ | 内容 |
+|---------|------|------|------|
+| [[AI生成デザインの「没個性化」問題と脱却ガイド]] | 2026-04-24 | 💡insight | AI デザインの画一化を避けるためのガイド |
 
 ---
 

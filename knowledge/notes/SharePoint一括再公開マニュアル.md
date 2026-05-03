@@ -1,3 +1,10 @@
+---
+date: 2026-04-30
+tags:
+  - agent/sharepoint
+  - type/📖how-to
+---
+
 # SharePoint ページ・ニュース 一括再公開マニュアル
 
 ## 概要

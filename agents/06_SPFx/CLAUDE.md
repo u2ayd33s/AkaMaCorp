@@ -49,6 +49,18 @@ Web パーツ・拡張機能の設計から App Catalog デプロイまで一貫
 作業前後は必ず `knowledge/SPFx/` を参照・更新する。
 - `knowledge/SPFx/INDEX.md` → `errors.md` → `workflow.md` の順に読む
 
+### カラー・デザイントークン（UI実装時は必読）
+
+Web パーツ・拡張機能の UI を実装する際は以下を参照すること。
+
+| ファイル | 参照タイミング |
+|---------|-------------|
+| [[knowledge/SPFx/sharepoint-theme-color-palette\|sharepoint-theme-color-palette]] | ライト/ダークモード対応・カラーパレット設計時（**必読**） |
+| [[knowledge/notes/SharePoint-FluentUI-DesignTokens\|Fluent UI デザイントークン]] | Fluent UI v9 トークンの確認 |
+| [[knowledge/notes/SharePoint-FluentUI-CSS変数リファレンス\|Fluent UI CSS変数リファレンス]] | CSS変数の詳細仕様確認 |
+
+**重要**: カラー変数は `var(--colorBrandBackground)` など Fluent UI の CSS カスタムプロパティを使うこと。ハードコードした色値は禁止。ライト/ダーク両対応の変換ルールは `sharepoint-theme-color-palette.md` の「カスタムテーマ設計ガイド」を参照。
+
 ## 共通ルール
 
 タイムアウト・中断ルールを含む全エージェント共通の運用ルールは [[SPRINT-FLOW]] の「全エージェント共通ルール」セクションを参照。
