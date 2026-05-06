@@ -52,6 +52,26 @@ Obsidian Vault として管理し、Claude Code で編集する。
 - 結晶化タイミング（月次 or 20件超）で `nfd-crystallize` スキルを実行
 - ノートのフロントマターは必ず `date`, `tags` を含める
 
+## フォルダ構造ルール（複雑化防止）
+
+### agents/
+- 各エージェントフォルダには `CLAUDE.md` と `skills/` のみ置く
+- **ビルド成果物・sppkg展開物・バイナリは置かない**（→ 各リポジトリの sppkg/ で管理）
+- 新エージェント追加時は番号プレフィックス付きフォルダを作成し `agents/index.md` を更新する
+
+### memory/
+- 日次ログ: `memory/daily/YYYY-MM-DD.md`（命名規則厳守、プレフィックス禁止）
+- INSIGHT: `memory/insights/YYYY-MM-DD_タイトル.md`
+- ERROR: `memory/errors/YYYY-MM-DD_タイトル.md`
+- **ルートに `insights.md` / `error-patterns.md` などの単一集約ファイルを作らない**（サブフォルダで管理）
+
+### knowledge/
+- プロジェクト単位でフォルダを作成: `knowledge/[プロジェクト名]/`
+- 汎用ノートは `knowledge/notes/` に置く
+- **スクリプト本体・sppkg・画像などの成果物は置かない**（→ 各リポジトリで管理）
+
+---
+
 ## 記法ルール
 - リンク: `[[ノート名]]` を積極使用
 - タグ: kebab-case（例: `#sharepoint`, `#ai-skill`）
