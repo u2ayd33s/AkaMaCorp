@@ -1,3 +1,14 @@
+# ===== セキュリティ: 機密ファイル =====
+.env
+.env.*
+!.env.example
+credentials.json
+*.pem
+*.key
+*.p12
+*.pfx
+# ======================================
+
 # Obsidian
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
