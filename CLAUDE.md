@@ -76,3 +76,15 @@ Obsidian Vault として管理し、Claude Code で編集する。
 - リンク: `[[ノート名]]` を積極使用
 - タグ: kebab-case（例: `#sharepoint`, `#ai-skill`）
 - ファイル名: 日本語OK、スペースはハイフン
+
+---
+
+## コミット・PR ルール
+
+**このリポジトリ内の変更は、必ず `u2ayd33s/AkaMaCorp` に対してコミット・PRを行う。**
+MyCorp（DiscrepancyCheck）リポジトリに直接プッシュしない。
+
+| 作業内容 | 対象リポジトリ |
+|---------|--------------|
+| Vault ノート・ナレッジ・エージェント等の変更 | `u2ayd33s/AkaMaCorp` |
+| サブモジュールポインタ更新（AkaMaCorp 側） | `u2ayd33s/AkaMaCorp` の PR マージ後に MyCorp で行う |
