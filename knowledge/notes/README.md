@@ -17,17 +17,10 @@ tags: [knowledge, readme]
 | ファイル | 種別 | 内容 |
 |---------|------|------|
 | [[Graph vs sharepoint rest api]] | 📚reference | Graph API と SharePoint REST API の使い分け |
-| [[SharePointページコメントREST-API]] | 📚reference | コメント取得・投稿の REST API 仕様 |
-| [[SharePoint-REST-API-フィールド一覧]] | 📚reference | リスト/ライブラリで取得できるフィールド一覧 |
 | [[SharePointページ・ニュース一括再公開マニュアル]] | 📖how-to | PnP PowerShell による一括再公開手順 |
 | [[SharePoint一括再公開マニュアル]] | 📖how-to | 同上・詳細スクリプト付き完全版（実績：267ページ/6分） |
 
-## Fluent UI / デザイントークン
-
-| ファイル | 種別 | 内容 |
-|---------|------|------|
-| [[SharePoint-FluentUI-DesignTokens]] | 📚reference | SharePoint Fluent UI v3 デザイントークン一覧 |
-| [[SharePoint-FluentUI-CSS変数リファレンス]] | 📚reference | CSS変数の完全リファレンス |
+> REST API リファレンス・FluentUI CSS 変数は [[../sharepoint-scriptloader/INDEX|sharepoint-scriptloader/]] へ移動済み
 
 ## デザイン
 

@@ -1,5 +1,5 @@
 ---
-updated: 2026-05-06
+updated: 2026-05-16
 ---
 
 # knowledge — ナレッジハブ
@@ -19,6 +19,7 @@ knowledge/
 │   └── agent-lesson.md         ← エージェント学習ログ用
 ├── notes/                      ← プロジェクト横断ナレッジ（詳細 → [[notes/README]]）
 ├── SPFx/                       ← SPFx 開発ナレッジ
+├── sharepoint-scriptloader/    ← ScriptLoader JS/CSS スクリプト管理
 ├── chofu-station-signage/      ← 調布駅サイネージ差分チェック
 └── toyota-city-signage/        ← 豊田市サイネージ差分チェック
 ```
@@ -30,6 +31,7 @@ knowledge/
 | フォルダ | 対象リポジトリ | 担当エージェント | INDEX |
 |---------|-------------|----------------|-------|
 | [[SPFx/INDEX\|SPFx/]] | `MyCorp/SPFx` | 06_SPFx | [[SPFx/INDEX]] |
+| [[sharepoint-scriptloader/INDEX\|sharepoint-scriptloader/]] | `MyCorp/sharepoint-scriptloader` | 05_sharepoint | [[sharepoint-scriptloader/INDEX]] |
 | [[chofu-station-signage/INDEX\|chofu-station-signage/]] | `DiscrepancyCheck` | 08_discrepancy-check | [[chofu-station-signage/INDEX]] |
 | [[toyota-city-signage/INDEX\|toyota-city-signage/]] | `DiscrepancyCheck` | 08_discrepancy-check | [[toyota-city-signage/INDEX]] |
 
