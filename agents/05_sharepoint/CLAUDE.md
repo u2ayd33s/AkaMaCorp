@@ -37,6 +37,22 @@ SharePoint・SPFx・REST API に特化したエージェント。
 ## スキルの更新
 `skills/` 配下の各スキルディレクトリの `SKILL.md` を編集してアップデートしてください。
 
+## ナレッジ参照
+
+作業前後は必ず `knowledge/SPFx/` を参照・更新する。
+
+### カラー・デザイントークン（UI実装時は必読）
+
+SharePoint / SPFx の UI 実装・カスタマイズ時は以下を参照すること。
+
+| ファイル | 参照タイミング |
+|---------|-------------|
+| [[knowledge/SPFx/sharepoint-theme-color-palette\|sharepoint-theme-color-palette]] | ライト/ダークモード対応・カラーパレット設計時 |
+| [[knowledge/notes/SharePoint-FluentUI-DesignTokens\|Fluent UI デザイントークン]] | Fluent UI v3 トークンの確認 |
+| [[knowledge/notes/SharePoint-FluentUI-CSS変数リファレンス\|Fluent UI CSS変数リファレンス]] | CSS変数の詳細仕様確認 |
+
+**重要**: カラー変数は `--colorBrandBackground` など Fluent UI の CSS カスタムプロパティを直接使うこと。ハードコードした色値は禁止。ライト/ダーク切替の設計原則は `sharepoint-theme-color-palette.md` を参照。
+
 ## 共通ルール
 
 タイムアウト・中断ルールを含む全エージェント共通の運用ルールは [[SPRINT-FLOW]] の「全エージェント共通ルール」セクションを参照。
