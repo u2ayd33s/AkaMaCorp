@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SharePoint リストの添付ファイル — 実装リファレンス</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#fbfbfa;
+  --ink:#323333;
+  --ink-soft:#6a6d6b;
+  --teal:#0f899f;
+  --teal-wash:#eaf4f6;
+  --red:#e14648;
+  --red-wash:#fdeeee;
+  --rule:#e2e3e1;
+  --slab:#2b2d2d;
+  --slab-ink:#e8eae9;
+  --sans:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  --mono:"Roboto Mono",SFMono-Regular,Consolas,"Courier New",monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.85;
+  font-feature-settings:"palt" 1;
+}
+a{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(15,137,159,.35)}
+a:hover{border-bottom-color:var(--teal)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
+
+/* ---------- hero ---------- */
+.masthead{
+  border-bottom:1px solid var(--rule);
+  padding:64px 24px 52px;
+}
+.masthead-inner{max-width:1080px;margin:0 auto}
+.doc-kind{
+  font-size:13px;
+  color:var(--ink-soft);
+  letter-spacing:.04em;
+  margin:0 0 14px;
+}
+.masthead h1{
+  font-size:clamp(28px,4.4vw,42px);
+  line-height:1.35;
+  font-weight:700;
+  margin:0 0 8px;
+  letter-spacing:-.01em;
+}
+.masthead .sub{
+  margin:0 0 40px;
+  color:var(--ink-soft);
+  font-size:15px;
+  max-width:34em;
+}
+
+/* signature: the storage path, taken apart */
+.pathfig{
+  border-left:3px solid var(--teal);
+  padding:22px 0 4px 22px;
+}
+.pathfig-label{
+  font-size:12px;
+  color:var(--teal);
+  margin:0 0 12px;
+  font-weight:500;
+}
+.path{
+  font-family:var(--mono);
+  font-size:clamp(14px,2.3vw,20px);
+  line-height:2.1;
+  white-space:nowrap;
+  overflow-x:auto;
+  padding-bottom:6px;
+}
+.path .sep{color:#b6bab8}
+.path .seg{color:var(--ink)}
+.path .key{
+  color:var(--teal);
+  font-weight:500;
+  background:var(--teal-wash);
+  padding:2px 5px;
+  border-radius:2px;
+}
+.path-note{
+  margin:14px 0 0;
+  font-size:13px;
+  color:var(--ink-soft);
+  max-width:38em;
+  line-height:1.8;
+}
+
+/* ---------- layout ---------- */
+.shell{
+  max-width:1080px;
+  margin:0 auto;
+  padding:0 24px 96px;
+  display:grid;
+  grid-template-columns:190px 1fr;
+  gap:56px;
+}
+.toc{
+  align-self:start;
+  position:sticky;
+  top:40px;
+  padding-top:52px;
+  font-size:13.5px;
+  line-height:1.6;
+}
+.toc ol{list-style:none;margin:0;padding:0;counter-reset:t}
+.toc li{counter-increment:t;margin:0 0 12px;display:flex;gap:10px}
+.toc li::before{
+  content:counter(t);
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--teal);
+  padding-top:3px;
+  min-width:12px;
+}
+.toc a{color:var(--ink-soft);border:0}
+.toc a:hover{color:var(--teal)}
+
+.body{
+  padding-top:52px;
+  border-left:1px solid var(--rule);
+  padding-left:40px;
+  min-width:0;
+}
+section{margin:0 0 60px;scroll-margin-top:32px}
+section h2{
+  font-size:20px;
+  font-weight:700;
+  line-height:1.5;
+  margin:0 0 6px;
+}
+section > .lede{
+  color:var(--ink-soft);
+  font-size:14.5px;
+  margin:0 0 24px;
+  max-width:34em;
+}
+h3{
+  font-size:15.5px;
+  font-weight:500;
+  margin:34px 0 10px;
+  padding-bottom:6px;
+  border-bottom:1px solid var(--rule);
+}
+p{margin:0 0 16px;max-width:34em}
+ul{margin:0 0 18px;padding-left:1.25em;max-width:34em}
+li{margin-bottom:6px}
+code{
+  font-family:var(--mono);
+  font-size:.88em;
+  background:#f0f2f1;
+  color:var(--ink);
+  padding:2px 5px;
+  border-radius:2px;
+  word-break:break-all;
+}
+.watch code{background:rgba(225,70,72,.1)}
+pre code{
+  background:none;
+  color:inherit;
+  padding:0;
+  border-radius:0;
+  font-size:inherit;
+  word-break:normal;
+}
+
+/* ---------- code blocks ---------- */
+.snippet{margin:0 0 22px}
+.snippet-bar{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:16px;
+  padding:0 0 7px;
+}
+.snippet-bar .what{font-size:12.5px;color:var(--ink-soft);font-family:var(--mono)}
+.copy{
+  font-family:var(--sans);
+  font-size:12px;
+  color:var(--teal);
+  background:none;
+  border:0;
+  padding:2px 4px;
+  cursor:pointer;
+  flex:none;
+}
+.copy:hover{text-decoration:underline}
+.copy[data-done="1"]{color:var(--ink-soft)}
+pre{
+  margin:0;
+  background:var(--slab);
+  color:var(--slab-ink);
+  padding:18px 20px;
+  overflow-x:auto;
+  border-radius:3px;
+  font-family:var(--mono);
+  font-size:13px;
+  line-height:1.75;
+  tab-size:2;
+}
+pre .c{color:#8d9a97}
+pre .s{color:#9fd5c4}
+pre .k{color:#7fc4d4}
+
+/* ---------- table ---------- */
+.tablewrap{overflow-x:auto;margin:0 0 24px}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+th,td{
+  text-align:left;
+  padding:11px 14px 11px 0;
+  border-bottom:1px solid var(--rule);
+  vertical-align:top;
+  line-height:1.7;
+}
+thead th{
+  font-weight:500;
+  font-size:12.5px;
+  color:var(--ink-soft);
+  border-bottom:1px solid var(--ink);
+  padding-bottom:8px;
+}
+tbody th{font-weight:500;width:11em}
+td.no{color:var(--red)}
+td.yes{color:var(--teal)}
+
+/* ---------- notes ---------- */
+.watch{
+  border-left:3px solid var(--red);
+  background:var(--red-wash);
+  padding:14px 18px;
+  margin:0 0 22px;
+  font-size:14px;
+  max-width:36em;
+}
+.watch p{margin:0;max-width:none}
+.watch p + p{margin-top:8px}
+.watch strong{font-weight:700}
+
+.pitfalls{list-style:none;padding:0;max-width:38em}
+.pitfalls li{
+  padding:14px 0;
+  border-bottom:1px solid var(--rule);
+  margin:0;
+  font-size:14.5px;
+  line-height:1.8;
+}
+.pitfalls li:first-child{border-top:1px solid var(--rule)}
+.pitfalls b{display:block;font-weight:500;font-size:14px}
+.pitfalls span{color:var(--ink-soft);font-size:13.5px}
+
+.verdict{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  border:1px solid var(--rule);
+  border-radius:3px;
+  overflow:hidden;
+  max-width:38em;
+}
+.verdict > div{padding:20px 22px}
+.verdict > div + div{border-left:1px solid var(--rule)}
+.verdict h4{
+  margin:0 0 10px;
+  font-size:14.5px;
+  font-weight:700;
+}
+.verdict .a h4{color:var(--teal)}
+.verdict .b h4{color:var(--red)}
+.verdict ul{margin:0;padding-left:1.1em;font-size:13.5px;max-width:none}
+.verdict li{margin-bottom:5px;line-height:1.7}
+
+footer{
+  border-top:1px solid var(--rule);
+  padding:28px 24px 60px;
+  font-size:13px;
+  color:var(--ink-soft);
+}
+footer div{max-width:1080px;margin:0 auto}
+
+@media (max-width:880px){
+  .shell{grid-template-columns:1fr;gap:0;padding-bottom:64px}
+  .toc{position:static;padding:44px 0 0;border-bottom:1px solid var(--rule);padding-bottom:28px}
+  .toc ol{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+  .body{border-left:0;padding-left:0;padding-top:40px}
+  .verdict{grid-template-columns:1fr}
+  .verdict > div + div{border-left:0;border-top:1px solid var(--rule)}
+  .masthead{padding:44px 24px 40px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="doc-kind">SharePoint Online 実装リファレンス</p>
+    <h1>リストアイテムの添付ファイル</h1>
+    <p class="sub">ドキュメントライブラリのファイルとは別物として扱う。制約、REST API、PnP、Power Platform からの操作をまとめたもの。</p>
+
+    <figure class="pathfig">
+      <p class="pathfig-label">添付ファイルの実際の保存先</p>
+      <div class="path">
+        <span class="sep">/</span><span class="seg">Lists</span><span class="sep">/</span><span class="seg">{リストのURL名}</span><span class="sep">/</span><span class="seg">Attachments</span><span class="sep">/</span><span class="key">{ItemId}</span><span class="sep">/</span><span class="seg">{ファイル名}</span>
+      </div>
+      <p class="path-note">中身はライブラリと同じファイルだが、リスト直下の隠しフォルダーにアイテム ID ごとに格納される。この構造がそのまま制約になっている — アイテムに従属するのでフォルダー階層を持てず、独立した共有もできない。</p>
+    </figure>
+  </div>
+</header>
+
+<div class="shell">
+
+  <nav class="toc" aria-label="目次">
+    <ol>
+      <li><a href="#basics">実体と Attachments 列</a></li>
+      <li><a href="#diff">ライブラリとの違い</a></li>
+      <li><a href="#rest">REST API</a></li>
+      <li><a href="#pnp">PnP PowerShell</a></li>
+      <li><a href="#pp">Power Platform</a></li>
+      <li><a href="#format">列・ビューの書式設定</a></li>
+      <li><a href="#pitfalls">ハマりどころ</a></li>
+      <li><a href="#choose">使い分けの目安</a></li>
+    </ol>
+  </nav>
+
+  <main class="body">
+
+    <section id="basics">
+      <h2>実体と Attachments 列</h2>
+      <p class="lede">添付ファイルはアイテムのプロパティとして扱われる。</p>
+
+      <p>リストには <code>Attachments</code>（内部名も同じ）というブール型の組み込み列があり、持っている情報は「添付があるかどうか」だけ。ファイル名や URL はこの列には入らない。実ファイルの一覧は <code>AttachmentFiles</code> コレクションから取得する。</p>
+
+      <p>リストのバージョン管理を有効にしている場合、アイテムのバージョンを戻すと添付ファイルの構成も戻る。ただし残るのは「そのバージョン時点でどのファイルが付いていたか」で、ファイル自体の版管理はされない。</p>
+
+      <p>検索については添付ファイルの中身もクロールされるため、KQL で本文にヒットさせることは可能。</p>
+
+      <h3>添付機能そのものを無効化する</h3>
+      <div class="snippet">
+        <div class="snippet-bar"><span class="what">MERGE /_api/web/lists</span><button class="copy" type="button">コピー</button></div>
+<pre><code>fetch("/_api/web/lists/getbytitle('リスト名')", {
+  method: "POST",
+  headers: {
+    <span class="s">"Accept"</span>: <span class="s">"application/json;odata=nometadata"</span>,
+    <span class="s">"Content-Type"</span>: <span class="s">"application/json;odata=nometadata"</span>,
+    <span class="s">"X-RequestDigest"</span>: digest,
+    <span class="s">"X-HTTP-Method"</span>: <span class="s">"MERGE"</span>,
+    <span class="s">"IF-MATCH"</span>: <span class="s">"*"</span>
+  },
+  body: JSON.stringify({ EnableAttachments: <span class="k">false</span> })
+});</code></pre>
+      </div>
+      <p>既に添付があるアイテムのファイルは、無効化しても消えず参照だけ残る。切り替えは影響範囲を確認してから。</p>
+    </section>
+
+    <section id="diff">
+      <h2>ライブラリとの違い</h2>
+      <p class="lede">できないことを先に把握しておくと設計を間違えにくい。</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th scope="col"></th><th scope="col">添付ファイル</th><th scope="col">ドキュメントライブラリ</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">メタデータ列</th><td class="no">付けられない</td><td class="yes">付けられる</td></tr>
+            <tr><th scope="row">バージョン管理</th><td class="no">ファイル単体では不可</td><td class="yes">可能</td></tr>
+            <tr><th scope="row">チェックイン / アウト</th><td class="no">不可</td><td class="yes">可能</td></tr>
+            <tr><th scope="row">フォルダー階層</th><td class="no">ItemId 直下のみ</td><td class="yes">自由</td></tr>
+            <tr><th scope="row">共有リンク発行</th><td class="no">実質不可</td><td class="yes">可能</td></tr>
+            <tr><th scope="row">同名ファイルの上書き</th><td class="no">削除してから追加</td><td class="yes">バージョンで上書き</td></tr>
+            <tr><th scope="row">サイズ上限</th><td>ライブラリより小さい</td><td>250 GB</td></tr>
+            <tr><th scope="row">グリッド編集での追加</th><td class="no">不可</td><td>—</td></tr>
+            <tr><th scope="row">検索での本文ヒット</th><td class="yes">する</td><td class="yes">する</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="watch">
+        <p><strong>サイズ上限は公式値を都度確認する。</strong>添付ファイルの上限はライブラリのアップロード上限とは別枠で、従来 250 MB 程度とされてきた。数百 MB 級を扱う想定なら添付は選ばず、ライブラリ + 参照列にする。</p>
+      </div>
+    </section>
+
+    <section id="rest">
+      <h2>REST API</h2>
+      <p class="lede">追加はバイナリを直接ボディに載せる。取得は $expand が効く。</p>
+
+      <h3>取得</h3>
+      <div class="snippet">
+        <div class="snippet-bar"><span class="what">GET 単一アイテムの添付一覧</span><button class="copy" type="button">コピー</button></div>
+<pre><code>/_api/web/lists/getbytitle('リスト名')/items(1)/AttachmentFiles</code></pre>
+      </div>
+      <div class="snippet">
+        <div class="snippet-bar"><span class="what">GET 一覧取得でまとめて展開</span><button class="copy" type="button">コピー</button></div>
+<pre><code>/_api/web/lists/getbytitle('リスト名')/items
+  ?$select=Id,Title,Attachments,AttachmentFiles/FileName,AttachmentFiles/ServerRelativeUrl
+  &$expand=AttachmentFiles
+  &$filter=Attachments eq 1</code></pre>
+      </div>
+      <p><code>Attachments</code> が false のアイテムは <code>AttachmentFiles</code> が空配列で返る。件数が多いリストでは <code>$filter=Attachments eq 1</code> を併用して無駄な展開を避ける。ファイルへのリンクは <code>ServerRelativeUrl</code> をそのまま使う。</p>
+
+      <h3>追加</h3>
+      <div class="snippet">
+        <div class="snippet-bar"><span class="what">POST AttachmentFiles/add</span><button class="copy" type="button">コピー</button></div>
+<pre><code><span class="c">// file は File オブジェクト（input[type=file] など）</span>
+<span class="k">const</span> url = <span class="s">`/_api/web/lists/getbytitle('リスト名')/items(1)`</span>
+  + <span class="s">`/AttachmentFiles/add(FileName='${encodeURIComponent(file.name)}')`</span>;
+
+<span class="k">await</span> fetch(url, {
+  method: <span class="s">"POST"</span>,
+  headers: {
+    <span class="s">"Accept"</span>: <span class="s">"application/json;odata=nometadata"</span>,
+    <span class="s">"X-RequestDigest"</span>: digest
+  },
+  body: <span class="k">await</span> file.arrayBuffer()   <span class="c">// バイナリをそのまま渡す</span>
+});</code></pre>
+      </div>
+      <div class="watch">
+        <p><strong>ファイル名の扱いが最大のハマりどころ。</strong><code>FileName</code> は URL パス内のリテラルなので <code>encodeURIComponent</code> が必須。日本語名はこれを忘れると 400 になる。</p>
+        <p>さらにファイル名にシングルクォートが含まれる場合は <code>''</code>（2 個重ね）にエスケープする。jQuery の <code>$.ajax</code> を使うなら <code>processData: false</code> を指定して、バイナリを文字列化させない。</p>
+      </div>
+
+      <h3>削除と置き換え</h3>
+      <div class="snippet">
+        <div class="snippet-bar"><span class="what">POST + X-HTTP-Method: DELETE</span><button class="copy" type="button">コピー</button></div>
+<pre><code><span class="k">await</span> fetch(<span class="s">`/_api/web/lists/getbytitle('リスト名')/items(1)`</span>
+  + <span class="s">`/AttachmentFiles/getByFileName('${encodeURIComponent(name)}')`</span>, {
+  method: <span class="s">"POST"</span>,
+  headers: {
+    <span class="s">"X-RequestDigest"</span>: digest,
+    <span class="s">"X-HTTP-Method"</span>: <span class="s">"DELETE"</span>,
+    <span class="s">"IF-MATCH"</span>: <span class="s">"*"</span>
+  }
+});</code></pre>
+      </div>
+      <p>同名ファイルを上書きする API はない。<strong>削除 → 追加</strong>の 2 ステップで置き換える。完全削除ではなくごみ箱に送る場合は、末尾を <code>/recycleObject</code> にする。</p>
+    </section>
+
+    <section id="pnp">
+      <h2>PnP PowerShell</h2>
+      <p class="lede">一括移行や棚卸しはこちらが速い。</p>
+      <div class="snippet">
+        <div class="snippet-bar"><span class="what">追加 / 取得 / 削除</span><button class="copy" type="button">コピー</button></div>
+<pre><code>Add-PnPListItemAttachment    -List <span class="s">"リスト名"</span> -Identity 1 -Path <span class="s">"C:\temp\doc.pdf"</span>
+Get-PnPListItemAttachment    -List <span class="s">"リスト名"</span> -Identity 1 -Path <span class="s">"C:\out"</span> -Force
+Remove-PnPListItemAttachment -List <span class="s">"リスト名"</span> -Identity 1 -FileName <span class="s">"doc.pdf"</span> -Force</code></pre>
+      </div>
+      <p><code>Get-PnPListItemAttachment</code> は <code>-Path</code> にローカルフォルダーを渡すとファイルとして書き出す。全アイテムを回して添付の有無を棚卸しするなら、<code>Get-PnPListItem</code> の結果に対して <code>Attachments</code> 列で絞ってから実行する。</p>
+    </section>
+
+    <section id="pp">
+      <h2>Power Platform</h2>
+      <p class="lede">Power Apps は添付をフォームから切り離せない。ここが設計の制約になる。</p>
+
+      <h3>Power Apps</h3>
+      <p>添付ファイルコントロールは SharePoint リストのフォーム（<code>Form.DataSource</code> 経由）でしか機能しない。<code>Patch</code> で添付ファイルを直接操作することはできない。</p>
+      <p>フォームを使わない独自 UI で添付を扱いたい場合は、Power Automate をカスタムコネクタのように呼び出し、その中で SharePoint コネクタか REST を叩く構成にする。表示だけなら、フローで添付ファイル名と URL を取得してギャラリーに流す。</p>
+
+      <h3>Power Automate</h3>
+      <ul>
+        <li><b>添付ファイルの取得</b> — ファイル名と ID の一覧を返す。中身は含まれない。</li>
+        <li><b>添付ファイルのコンテンツの取得</b> — 上記の ID を渡して本体を取る。</li>
+      </ul>
+      <p>2 段構えになるため、Apply to each の中でコンテンツ取得を回す形になる。件数が多いと実行時間に直結するので、必要なファイルだけ絞り込んでからループに入れる。</p>
+    </section>
+
+    <section id="format">
+      <h2>列・ビューの書式設定</h2>
+      <p class="lede">できるのはアイコンの出し分けまで。</p>
+      <p><code>Attachments</code> はブール値として評価されるので、クリップアイコンの表示制御はできる。</p>
+      <div class="snippet">
+        <div class="snippet-bar"><span class="what">列の書式設定 JSON</span><button class="copy" type="button">コピー</button></div>
+<pre><code>{
+  <span class="s">"elmType"</span>: <span class="s">"span"</span>,
+  <span class="s">"attributes"</span>: {
+    <span class="s">"iconName"</span>: <span class="s">"=if([$Attachments], 'Attach', '')"</span>
+  }
+}</code></pre>
+      </div>
+      <p>一方で、添付ファイル名やそのリンクを書式設定 JSON から直接参照する手段はない。ビュー上にファイル一覧を見せたい要件がある場合は、Power Automate で複数行テキスト列にファイル名を書き出しておき、その列を書式設定でリンク化する回避策をとる。</p>
+    </section>
+
+    <section id="pitfalls">
+      <h2>ハマりどころ</h2>
+      <p class="lede">実装時に踏みやすい順に。</p>
+      <ul class="pitfalls">
+        <li><b>日本語ファイル名で 400 が返る</b><span><code>FileName</code> の <code>encodeURIComponent</code> 漏れ。シングルクォートは <code>''</code> にエスケープする。</span></li>
+        <li><b>アップロードした添付が壊れている</b><span>バイナリが文字列化されている。<code>$.ajax</code> なら <code>processData: false</code>、fetch なら <code>ArrayBuffer</code> をそのまま <code>body</code> に渡す。</span></li>
+        <li><b>同名ファイルの再アップロードが失敗する</b><span>上書き API はない。先に削除する。</span></li>
+        <li><b>新規アイテム作成と同時に添付できない</b><span>添付先の <code>ItemId</code> が必要。アイテムを作成 → 返却された Id で添付、の順序になる。</span></li>
+        <li><b>グリッド（クイック編集）で添付を追加できない</b><span>詳細ペインかフォームを開く必要がある。運用手順に書いておく。</span></li>
+        <li><b>添付が多いリストで一覧表示が重い</b><span><code>$expand=AttachmentFiles</code> を無条件に付けている。<code>Attachments eq 1</code> で絞る。</span></li>
+        <li><b>ファイルの差し替え履歴を追えない</b><span>仕様。追跡が要件ならライブラリに寄せる。</span></li>
+      </ul>
+    </section>
+
+    <section id="choose">
+      <h2>使い分けの目安</h2>
+      <p class="lede">迷ったらこの線で判断する。</p>
+      <div class="verdict">
+        <div class="a">
+          <h4>添付ファイルで足りる</h4>
+          <ul>
+            <li>アイテムの証跡として付随するだけ（申請書の控え、写真）</li>
+            <li>ファイル単体で検索・共有される想定がない</li>
+            <li>1 アイテムあたり数点、サイズも小さい</li>
+            <li>アイテムを消したら一緒に消えてよい</li>
+          </ul>
+        </div>
+        <div class="b">
+          <h4>ライブラリに寄せる</h4>
+          <ul>
+            <li>ファイルにメタデータや分類を付けたい</li>
+            <li>差し替え履歴を残したい</li>
+            <li>ファイル単体で共有リンクを配りたい</li>
+            <li>サイズが大きい、または点数が多い</li>
+            <li>Power Apps 側で添付 UI を自作したい</li>
+          </ul>
+        </div>
+      </div>
+      <p>ライブラリを選ぶ場合は、リスト側に参照列（ハイパーリンク列やルックアップ）を置いて紐づける構成が扱いやすい。</p>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div>SharePoint リストの添付ファイル 実装リファレンス — API の仕様値および上限は変更されることがあるため、実装前に最新のドキュメントで確認してください。</div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = btn.closest('.snippet').querySelector('pre');
+    var text = pre.innerText;
+    var done = function () {
+      btn.textContent = 'コピーしました';
+      btn.dataset.done = '1';
+      setTimeout(function () {
+        btn.textContent = 'コピー';
+        delete btn.dataset.done;
+      }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () {
+        btn.textContent = 'コピーできません';
+        setTimeout(function () { btn.textContent = 'コピー'; }, 1800);
+      });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) { btn.textContent = 'コピーできません'; }
+      document.body.removeChild(ta);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
