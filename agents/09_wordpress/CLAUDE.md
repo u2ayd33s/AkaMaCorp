@@ -23,7 +23,60 @@ WordPress テーマ・プラグイン開発に特化したエージェント。
 
 | リポジトリ | ローカルパス | GitHub |
 |-----------|------------|--------|
-| artisan | `D:\2026artisan\app\public\wp-content\themes\www.artisan.jp.net` | [u2ayd33s/artisan](https://github.com/u2ayd33s/artisan) |
+| artisan-wordpress-themes | `D:\ArtisanProjects` | [u2ayd33s/artisan-wordpress-themes](https://github.com/u2ayd33s/artisan-wordpress-themes.git) |
+
+### リポジトリ構成
+
+```
+D:\ArtisanProjects/
+├── wp_hand/                  # 親テーマ（WP-HAND フレームワーク）
+│   ├── functions.php         # モジュール自動読み込みブートストラップ
+│   ├── theme.json            # ブロックエディタ設定（v2）
+│   ├── README.md             # フレームワークドキュメント
+│   ├── functions/            # 45個のPHP関数ファイル（モジュラー構成）
+│   │   ├── admin/meta_parts/ # 管理画面メタフィールド
+│   │   ├── blocks/           # ブロック関連
+│   │   ├── default_functions/# デフォルトWPフック
+│   │   ├── wp_hand_hook.php  # WP-HANDフックカスタマイズ例
+│   │   └── wh_seo_hook.php   # SEOプラグインフック
+│   ├── blocks/               # ACFカスタムブロック
+│   ├── css/                  # デザイントークン・CSS変数
+│   ├── inc/                  # テンプレートインクルード（breadcrumb, pager等）
+│   └── img/, js/, lib/
+│
+└── www.artisan.jp.net/       # 子テーマ（アーティサン株式会社コーポレートサイト）
+    ├── style.css             # Theme: アーティサン株式会社｜コーポレートサイト, Template: wp_hand, v1.0.4
+    ├── functions.php         # 子テーマブートストラップ
+    ├── theme.json            # 拡張ブロックエディタ設定（Artisanブランドカラー）
+    ├── front-page.php        # トップページ（30KB）
+    ├── header.php            # ナビゲーション付きヘッダー（36KB）
+    ├── footer.php            # 会社情報付きフッター
+    ├── page-*.php            # 50以上の固定ページテンプレート
+    │   ├── Microsoft Cloud系: page-microsoft-service, page-sharepoint-*, page-power-platform-*
+    │   ├── MaaS系: page-mobility, page-busyohou, page-norikaeannai, page-kantan-alert
+    │   └── 採用・会社系: page-recruit, page-company, page-contact-*
+    ├── functions/            # 6個のPHP関数ファイル
+    │   ├── functions.php     # メタラッパー・Google Fonts設定
+    │   ├── shortcode.php     # [home_url], [theme_url], [br-pc], [br-sp]
+    │   ├── rewrite.php       # URLリライトルール
+    │   └── wh_seo_hook.php   # SEO最適化フック
+    ├── css/                  # 39個のページ別CSS
+    ├── js/                   # 10個のJS（script.js 440KB）
+    ├── inc/                  # 50以上のテンプレートコンポーネント
+    │   ├── c-*.php           # コンポーネント（blog, case-study, faq, service等）
+    │   ├── data_*_ldjson.php # Schema.org構造化データ
+    │   └── site_data.php     # グローバルサイト設定
+    └── img/                  # 60MB以上の画像アセット
+```
+
+### 技術スタック
+
+- **親テーマ**: WP-HAND（モジュール自動読み込み型フレームワーク、wiki.m-hand.site に外部ドキュメント）
+- **ブロックエディタ**: theme.json v2、ACF PRO カスタムブロック
+- **フォント**: Noto Sans JP, Heebo（親）/ Montserrat, Noto Sans JP, Unbounded（子）
+- **構造化データ**: JSON-LD（Blog, Cloud, FAQ, Home, MaaS）
+- **CSS設計**: ページ別CSS分割、CSS変数によるデザイントークン、レスポンシブブレークポイント（375px〜1280px）
+- **カスタム投稿タイプ**: blog, case-study, download, interview, job-offer
 
 ## 使用するスキル
 
@@ -57,13 +110,15 @@ WordPress テーマ・プラグイン開発に特化したエージェント。
 
 ## コミット・PR ルール
 
-- 作業リポジトリ: `D:\2026artisan\app\public\wp-content\themes\www.artisan.jp.net`
-- コミット先: `u2ayd33s/artisan`
+- 作業リポジトリ: `D:\ArtisanProjects`
+- コミット先: `u2ayd33s/artisan-wordpress-themes`
 - ブランチ戦略: `main` → 機能ブランチ `feat/<feature>` → PR
 
 ## ナレッジ参照
 
-作業前後は必ず `knowledge/artisan/` を参照・更新する。
+- 作業前後は必ず `knowledge/artisan/` を参照・更新する。
+- WP-HAND フレームワークドキュメント: `D:\ArtisanProjects\wp_hand\README.md`
+- 外部 Wiki: wiki.m-hand.site（WP-HAND 関数・フィルターリファレンス）
 
 ## 共通ルール
 
