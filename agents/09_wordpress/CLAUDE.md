@@ -112,7 +112,25 @@ D:\ArtisanProjects/
 
 - 作業リポジトリ: `D:\ArtisanProjects`
 - コミット先: `u2ayd33s/artisan-wordpress-themes`
-- ブランチ戦略: `main` → 機能ブランチ `feat/<feature>` → PR
+
+### ブランチ戦略（必須）
+
+**main ブランチに直接コミット・プッシュしない。必ず作業用ブランチを作成してから PR を行う。**
+
+| プレフィックス | 用途 | 例 |
+|--------------|------|-----|
+| `feat/` | 新機能・ページ追加 | `feat/recruit-page` |
+| `fix/` | バグ修正 | `fix/header-nav` |
+| `docs/` | ドキュメント変更 | `docs/update-readme` |
+| `refactor/` | リファクタリング | `refactor/css-variables` |
+| `chore/` | 設定・雑務 | `chore/update-deps` |
+
+**手順:**
+1. `git checkout main && git pull origin main` で最新化
+2. `git checkout -b <prefix>/<description>` でブランチ作成（英語・kebab-case）
+3. 変更をコミット（ファイル個別指定）
+4. `git push -u origin <branch-name>` でリモートへプッシュ
+5. `gh pr create` で PR を作成
 
 ## ナレッジ参照
 
