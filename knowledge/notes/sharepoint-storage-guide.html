@@ -81,7 +81,7 @@
     <h1>SharePoint ストレージ対処ガイド</h1>
     <p>「組織のストレージがいっぱいです」の原因特定から、PowerShell（PnP）による一括対処まで</p>
     <p>対象テナント: <span class="kbd">u2ayd33s.onmicrosoft.com</span>（Microsoft 365 開発者プログラム）</p>
-    <span class="badge">作成日: 2026-07-24 ／ 実作業ログに基づく手順書</span>
+    <span class="badge">更新版 2026-07-24 ／ 実作業ログに基づく手順書（解決済み：420GB超 → 6.43GB）</span>
   </div>
 </header>
 
@@ -109,8 +109,19 @@
 <div class="card">
 <p>SharePointで <strong>「組織のストレージがいっぱいです」</strong> というエラーが表示された。これはテナント（組織）全体のSharePointストレージのプールを使い切った状態を指す。</p>
 <div class="note ok">
-<strong>結論：</strong> 原因は <span class="kbd">/sites/AkamaFolder</span> サイトの「ドキュメント」ライブラリだった。<strong>単一サイトで412GB</strong> を消費し、開発テナントの上限（約300GB）を突破していた。26万件超のファイルとそのバージョン履歴が主因。<strong>バージョン履歴の一括トリミング</strong>を実行して対処した。
+<strong>結論：</strong> 容量を食っていたのは <span class="kbd">/sites/AkamaFolder</span> サイト（当初412GB）。だが最終的な<strong>決定打は「ごみ箱を空にすること」</strong>だった。ドキュメントを削除しても、その実体（<strong>331.99GB／1,924件</strong>）が<strong>ごみ箱に残ったまま容量を消費し続け</strong>、読み取り専用ロックが解除されなかった。ごみ箱を空にした瞬間に <strong>サイト0GB・ロック解除・テナント合計6.43GB</strong> まで一気に解消した。
 </div>
+<div class="note danger">
+<strong>最大の教訓：</strong> ファイルを削除しても<strong>ごみ箱に入るだけで容量は1バイトも戻らない</strong>（最大93日消費し続ける）。「減らしたのに満杯のまま」なら、<strong>まず真っ先にごみ箱を疑う</strong>こと。
+</div>
+<h3>ビフォー / アフター</h3>
+<table>
+  <tr><th>指標</th><th class="num">対処前</th><th class="num">対処後</th></tr>
+  <tr><td>AkamaFolder 使用量</td><td class="num big">412 GB</td><td class="num">0 GB</td></tr>
+  <tr><td>AkamaFolder ごみ箱</td><td class="num big">331.99 GB（1,924件）</td><td class="num">0 GB</td></tr>
+  <tr><td>テナント全体 合計</td><td class="num big">420 GB 超（上限突破）</td><td class="num">6.43 GB</td></tr>
+  <tr><td>サイトの状態</td><td>ReadOnly（読み取り専用）</td><td>Unlock</td></tr>
+</table>
 <p>開発者プログラムのテナントは容量を追加購入できないため、対処は「増やす」ではなく <strong>「減らす（ごみ箱・バージョン・不要ファイルの削減）」</strong> が基本となる。</p>
 </div>
 
@@ -136,6 +147,9 @@
 <div class="step"><div class="n">1</div><div><strong>全サイトのごみ箱を空にする</strong>（第1段階＋第2段階）。削除しても最大93日ごみ箱に残り容量を消費し続けるため。</div></div>
 <div class="step"><div class="n">2</div><div><strong>容量を食っているサイトを特定する</strong>。全サイトを使用量順にランキングして犯人を絞り込む。</div></div>
 <div class="step"><div class="n">3</div><div><strong>犯人サイトのバージョン履歴をトリミング／不要ファイルを削除する</strong>。実体の容量を削減する。</div></div>
+<div class="note ok">
+<strong>今回いちばん効いたのはステップ1（＋削除後の再クリア）：</strong> ファイル削除後にごみ箱を空にしたら、332GBが解放されてテナントが即座に上限以下に戻った。<strong>大きな削除をしたら、その削除分がごみ箱に入るので「もう一度ごみ箱を空にする」</strong>のが決め手になる。
+</div>
 <div class="note warn">
 <strong>反映のタイムラグ：</strong> ごみ箱を空にしても、管理センターの空き容量表示への反映は<strong>数時間〜最大48時間</strong>かかる。バージョン削除ジョブは<strong>数日</strong>かけて処理される。すぐに数字が動かなくても正常。
 </div>
@@ -268,7 +282,22 @@ Get-PnPTenantSite -Identity <span class="s">"https://u2ayd33s.sharepoint.com/sit
   <tr><td>サイトのリソース ファイル</td><td class="num">26</td><td>ON</td></tr>
   <tr><td>スタイル ライブラリ</td><td class="num">0</td><td>ON</td></tr>
 </table>
-<p>「ドキュメント」ライブラリの26万件超のファイルとそのバージョン履歴が412GBの正体。ここに対してバージョントリミングを実行した。</p>
+<p>「ドキュメント」ライブラリの26万件超のファイルとそのバージョン履歴が412GBの正体。ここに対してバージョントリミングを実行し、その後ファイル本体も削減した。</p>
+
+<h3>決定打：ごみ箱に隠れていた 332GB</h3>
+<p>ファイルを削減してもなお「組織のストレージがいっぱいです。SharePoint サイトは現在読み取り専用です」が出続けた。原因はごみ箱だった。<span class="kbd">Get-PnPRecycleBinItem</span> で確認すると、削除したはずのファイルがごみ箱に残り、依然として容量を消費していた。</p>
+<pre>PS&gt; <span class="k">$items</span> = Get-PnPRecycleBinItem
+PS&gt; <span class="s">"{0} 件 / 合計 {1:N2} GB"</span> -f <span class="k">$items</span>.Count, ((<span class="k">$items</span> | Measure-Object Size -Sum).Sum/1GB)
+<span class="c">1924 件 / 合計 331.99 GB</span>   ← これが「減らしたのに満杯」の正体</pre>
+<p><span class="kbd">Clear-PnPRecycleBinItem -All -Force</span> で空にした直後の確認結果：</p>
+<pre>Url                 : .../sites/AkamaFolder
+StorageUsageCurrent : <span class="s">0</span>          <span class="c"># 412GB → 0</span>
+LockState           : <span class="s">Unlock</span>     <span class="c"># 読み取り専用が自動解除</span>
+
+<span class="c"># テナント全体の合計</span>
+全サイト合計使用量: <span class="s">6.43 GB</span>   <span class="c"># 420GB超 → 6.43GB。完全解決。</span></pre>
+<div class="note ok"><strong>解決：</strong> ごみ箱を空にした瞬間に、サイトは0GB・ロック解除、テナント全体は6.43GBまで低下。読み取り専用状態は使用量が上限を下回ると<strong>自動的に解除</strong>される（手動解除は不要）。</div>
+<div class="note danger"><strong>不可逆：</strong> ごみ箱を空にした分（第2段階含む）は<strong>完全削除され復元できない</strong>。実行前に、消したくないファイルが混ざっていないか確認すること。</div>
 </div>
 
 <!-- 9 -->
@@ -339,6 +368,7 @@ Write-Host <span class="s">"あなたのアカウント: $adminUpn"</span> -Fore
   <tr><th>目的</th><th>コマンド</th></tr>
   <tr><td>管理センターに接続</td><td><span class="kbd">Connect-PnPOnline -Url https://&lt;t&gt;-admin.sharepoint.com -Interactive -ClientId $id</span></td></tr>
   <tr><td>全サイト取得</td><td><span class="kbd">Get-PnPTenantSite -IncludeOneDriveSites</span></td></tr>
+  <tr><td>ごみ箱の量を確認</td><td><span class="kbd">Get-PnPRecycleBinItem | Measure-Object Size -Sum</span></td></tr>
   <tr><td>ごみ箱を空に（第1+第2）</td><td><span class="kbd">Clear-PnPRecycleBinItem -All -Force</span></td></tr>
   <tr><td>ライブラリ一覧</td><td><span class="kbd">Get-PnPList</span></td></tr>
   <tr><td>バージョン一括トリミング</td><td><span class="kbd">New-PnPSiteFileVersionBatchDeleteJob -Automatic -Force</span></td></tr>

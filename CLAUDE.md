@@ -88,3 +88,21 @@ MyCorp（DiscrepancyCheck）リポジトリに直接プッシュしない。
 |---------|--------------|
 | Vault ノート・ナレッジ・エージェント等の変更 | `u2ayd33s/AkaMaCorp` |
 | サブモジュールポインタ更新（AkaMaCorp 側） | `u2ayd33s/AkaMaCorp` の PR マージ後に MyCorp で行う |
+
+### ブランチ戦略（必須）
+
+**main ブランチに直接コミット・プッシュしない。必ず作業用ブランチを作成してから PR を行う。**
+
+| プレフィックス | 用途 | 例 |
+|--------------|------|-----|
+| `feat/` | 新機能・ナレッジ追加 | `feat/add-spfx-knowledge` |
+| `fix/` | 修正 | `fix/daily-template` |
+| `docs/` | ドキュメント変更 | `docs/update-agent-registry` |
+| `chore/` | 設定・雑務 | `chore/update-skills` |
+
+**手順:**
+1. `git checkout main && git pull origin main` で最新化
+2. `git checkout -b <prefix>/<description>` でブランチ作成（英語・kebab-case）
+3. 変更をコミット（ファイル個別指定）
+4. `git push -u origin <branch-name>` でリモートへプッシュ
+5. `gh pr create` で PR を作成

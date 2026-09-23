@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SharePoint Search REST API 攻略ノート — ニュース取得とカテゴリ絞り込みの全記録</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=Shippori+Mincho:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F7F5;
+  --card:#FFFFFF;
+  --ink:#20262B;
+  --ink-soft:#5A6670;
+  --teal:#036C70;
+  --teal-deep:#024E52;
+  --teal-tint:#E3EFEF;
+  --amber:#B96A00;
+  --amber-tint:#FBF1E2;
+  --red:#B4372F;
+  --line:#DCE1E0;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans JP',sans-serif;
+  --serif:'Shippori Mincho',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.9;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px}
+
+/* ---------- hero ---------- */
+header{
+  border-bottom:1px solid var(--line);
+  background:
+    linear-gradient(var(--paper) 0 0) padding-box,
+    repeating-linear-gradient(90deg,transparent 0 62px,rgba(3,108,112,.06) 62px 63px);
+  padding:72px 0 56px;
+}
+.eyebrow{
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:.18em;
+  color:var(--teal);
+  text-transform:uppercase;
+  margin-bottom:20px;
+}
+h1{
+  font-family:var(--serif);
+  font-weight:800;
+  font-size:clamp(30px,5.4vw,46px);
+  line-height:1.35;
+  letter-spacing:.01em;
+}
+h1 .accent{color:var(--teal)}
+.lede{
+  margin-top:24px;
+  max-width:640px;
+  color:var(--ink-soft);
+  font-size:15px;
+}
+.thesis{
+  margin-top:36px;
+  display:inline-block;
+  border:1px solid var(--teal);
+  border-left:6px solid var(--teal);
+  background:var(--teal-tint);
+  padding:14px 22px;
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:clamp(16px,2.6vw,20px);
+  color:var(--teal-deep);
+}
+
+/* ---------- toc ---------- */
+nav.toc{
+  border-bottom:1px solid var(--line);
+  background:var(--card);
+}
+nav.toc ol{
+  display:flex;flex-wrap:wrap;gap:2px 26px;
+  list-style:none;
+  padding:16px 0;
+  font-family:var(--mono);font-size:12.5px;
+}
+nav.toc a{color:var(--ink-soft);text-decoration:none;padding:4px 0;display:inline-block}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--teal)}
+nav.toc a::before{content:attr(data-n) " ";color:var(--teal);font-weight:500}
+
+/* ---------- sections ---------- */
+main{padding:24px 0 80px}
+section{padding:56px 0 8px}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px}
+.sec-num{
+  font-family:var(--mono);font-size:13px;color:var(--teal);
+  border:1px solid var(--teal);padding:2px 10px;border-radius:2px;
+  white-space:nowrap;
+}
+h2{
+  font-family:var(--serif);font-weight:800;
+  font-size:clamp(22px,3.6vw,30px);
+  line-height:1.4;
+}
+h3{
+  font-size:17px;font-weight:700;
+  margin:36px 0 12px;
+  padding-left:12px;
+  border-left:4px solid var(--teal);
+}
+p{margin:0 0 16px;max-width:70ch}
+p.note{color:var(--ink-soft);font-size:14px}
+strong{font-weight:700}
+em{font-style:normal;background:linear-gradient(transparent 62%,rgba(3,108,112,.22) 62%)}
+
+/* ---------- cards & tables ---------- */
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:26px 28px;
+  margin:20px 0;
+}
+.card h4{font-size:15px;font-weight:700;margin-bottom:10px;color:var(--teal-deep)}
+table{
+  width:100%;border-collapse:collapse;margin:20px 0;
+  background:var(--card);border:1px solid var(--line);
+  font-size:14.5px;
+}
+th,td{padding:12px 16px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--teal-tint);color:var(--teal-deep);font-weight:700;font-size:13px;letter-spacing:.04em}
+tr:last-child td{border-bottom:none}
+td code,p code,li code{
+  font-family:var(--mono);font-size:.88em;
+  background:#EDF0EF;border:1px solid var(--line);
+  padding:1px 6px;border-radius:3px;
+  word-break:break-all;
+}
+
+/* ---------- code blocks ---------- */
+pre{
+  background:var(--ink);
+  color:#E8ECEA;
+  font-family:var(--mono);
+  font-size:13.5px;line-height:1.8;
+  padding:22px 26px;margin:20px 0;
+  border-radius:6px;
+  overflow-x:auto;
+  border-left:6px solid var(--teal);
+}
+pre .c{color:#7E8C96}
+pre .k{color:#7FD1C7}
+pre .s{color:#F0C674}
+.pre-label{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;
+  color:var(--ink-soft);margin:24px 0 -12px;
+  text-transform:uppercase;
+}
+
+/* ---------- pitfall ---------- */
+.pitfall{
+  background:var(--amber-tint);
+  border:1px solid #E4C89A;
+  border-left:6px solid var(--amber);
+  border-radius:6px;
+  padding:20px 24px;margin:20px 0;
+}
+.pitfall .tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  color:var(--amber);font-weight:500;display:block;margin-bottom:8px;
+}
+.pitfall p{margin-bottom:8px}
+.pitfall p:last-child{margin-bottom:0}
+
+/* ---------- diagrams ---------- */
+figure.diagram{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:30px 24px 18px;
+  margin:24px 0;
+}
+figure.diagram svg{width:100%;height:auto;display:block}
+figcaption{
+  font-family:var(--mono);font-size:12px;color:var(--ink-soft);
+  text-align:center;margin-top:14px;letter-spacing:.06em;
+}
+
+/* ---------- journey log ---------- */
+.log{list-style:none;margin:28px 0;position:relative;padding-left:34px}
+.log::before{
+  content:"";position:absolute;left:10px;top:8px;bottom:8px;
+  width:2px;background:var(--line);
+}
+.log li{position:relative;padding:0 0 34px}
+.log li::before{
+  content:"";position:absolute;left:-30px;top:8px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--paper);border:3px solid var(--teal);
+}
+.log li.ng::before{border-color:var(--red)}
+.log .step-title{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  font-weight:700;font-size:15.5px;margin-bottom:6px;
+}
+.log .step-title .q{
+  font-family:var(--mono);font-size:12px;font-weight:400;
+  color:var(--ink-soft);background:#EDF0EF;
+  border:1px solid var(--line);padding:2px 8px;border-radius:3px;
+}
+.stamp{
+  font-family:var(--serif);font-weight:800;font-size:12px;
+  border:2.5px solid currentColor;border-radius:50%;
+  width:46px;height:46px;
+  display:inline-flex;align-items:center;justify-content:center;
+  transform:rotate(-8deg);
+  flex-shrink:0;
+  letter-spacing:.05em;
+}
+.stamp.ok{color:var(--teal)}
+.stamp.ng{color:var(--red)}
+.log .detail{color:var(--ink-soft);font-size:14px;max-width:66ch}
+.log .detail code{font-size:.9em}
+
+/* ---------- checklist ---------- */
+ul.checks{list-style:none;margin:16px 0}
+ul.checks li{
+  padding:10px 0 10px 34px;position:relative;
+  border-bottom:1px dashed var(--line);
+  font-size:15px;
+}
+ul.checks li::before{
+  content:"✓";position:absolute;left:4px;top:9px;
+  color:var(--teal);font-weight:700;
+}
+ul.checks li:last-child{border-bottom:none}
+
+/* ---------- links ---------- */
+a.ext{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(3,108,112,.35)}
+a.ext:hover{border-bottom-color:var(--teal)}
+ul.links{list-style:none;margin:12px 0}
+ul.links li{padding:10px 0;border-bottom:1px dashed var(--line)}
+ul.links li:last-child{border-bottom:none}
+ul.links .src{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:block}
+
+/* ---------- copy button ---------- */
+.copy-wrap{position:relative;margin:20px 0}
+.copy-wrap pre{margin:0;padding-right:76px}
+.copy-wrap .url-label{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;
+  color:var(--teal-deep);margin:22px 0 8px;font-weight:500;
+}
+.copy-btn{
+  position:absolute;top:10px;right:10px;
+  font-family:var(--mono);font-size:11.5px;
+  color:#E8ECEA;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:4px;padding:5px 12px;cursor:pointer;
+  transition:background .15s;
+}
+.copy-btn:hover,.copy-btn:focus-visible{background:rgba(255,255,255,.18)}
+.copy-btn.done{color:#7FD1C7;border-color:#7FD1C7}
+
+footer{
+  border-top:1px solid var(--line);
+  padding:40px 0 64px;
+  color:var(--ink-soft);
+  font-size:13px;
+  font-family:var(--mono);
+}
+
+@media (max-width:600px){
+  section{padding:44px 0 4px}
+  .card,pre{padding:18px 16px}
+  th,td{padding:10px 10px}
+}
+@media (prefers-reduced-motion:no-preference){
+  section{animation:rise .5s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">SharePoint Online / Search REST API — Field Notes</p>
+    <h1>テナント横断ニュース取得と<br>カテゴリ絞り込み、<span class="accent">実装までの全記録</span></h1>
+    <p class="lede">Highlighted Content Web Part の裏側で動く Search REST API を直接叩き、独自カテゴリ列での絞り込みが動くまでに踏んだ全工程・全落とし穴のまとめ。実際のテナントでの検証ログ付き。</p>
+    <p class="thesis">検索APIは「本棚」を読まない。「索引」を引く。</p>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <ol>
+      <li><a data-n="01" href="#arch">検索の仕組み</a></li>
+      <li><a data-n="02" href="#request">リクエストの基本形</a></li>
+      <li><a data-n="03" href="#pipeline">プロパティの一生</a></li>
+      <li><a data-n="04" href="#managed">管理プロパティの設定</a></li>
+      <li><a data-n="05" href="#response">レスポンスの読み方</a></li>
+      <li><a data-n="06" href="#journey">検証ログ</a></li>
+      <li><a data-n="07" href="#trouble">早見表</a></li>
+      <li><a data-n="08" href="#code">最終コード</a></li>
+      <li><a data-n="09" href="#refs">参考</a></li>
+      <li><a data-n="10" href="#ops">操作リファレンスとKQL入門</a></li>
+    </ol>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===== 01 ===== -->
+<section id="arch">
+  <div class="sec-head"><span class="sec-num">01</span><h2>検索の仕組み — 索引を引くAPI</h2></div>
+
+  <p>Highlighted Content Web Part に専用APIはない。内部で <code>/_api/search</code>(Search REST API)を呼んでいるだけなので、同じAPIを直接使えば同じことができる。そしてこのAPIはリストAPIと決定的に違う。<strong>元データを読まず、クローラーが作った検索インデックス(索引)だけを見る</strong>。</p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 680 260" role="img" aria-label="検索の仕組み。リスト・ページがクロールされて検索インデックスになり、Search REST APIはインデックスへKQLで問い合わせて検索結果JSONを得る">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5A6670" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <g>
+        <rect x="20" y="55" width="180" height="66" rx="7" fill="#F0F2F1" stroke="#B9C2C0" stroke-width="1"/>
+        <text x="110" y="83" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="15" font-weight="700" fill="#20262B">リスト・ページ</text>
+        <text x="110" y="104" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="12" fill="#5A6670">元データ(常に最新)</text>
+      </g>
+      <line x1="200" y1="88" x2="242" y2="88" stroke="#5A6670" stroke-width="1.4" marker-end="url(#ar)"/>
+      <g>
+        <rect x="254" y="55" width="180" height="66" rx="7" fill="#E3EFEF" stroke="#036C70" stroke-width="1.2"/>
+        <text x="344" y="83" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="15" font-weight="700" fill="#024E52">検索インデックス</text>
+        <text x="344" y="104" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="12" fill="#036C70">クロールで定期更新</text>
+      </g>
+      <line x1="434" y1="88" x2="476" y2="88" stroke="#5A6670" stroke-width="1.4" marker-end="url(#ar)"/>
+      <g>
+        <rect x="488" y="55" width="172" height="66" rx="7" fill="#E3EFEF" stroke="#036C70" stroke-width="1.2"/>
+        <text x="574" y="83" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="15" font-weight="700" fill="#024E52">検索結果</text>
+        <text x="574" y="104" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="12" fill="#036C70">JSON / XML で返る</text>
+      </g>
+      <g>
+        <rect x="254" y="180" width="180" height="60" rx="7" fill="#FFFFFF" stroke="#036C70" stroke-width="1.2"/>
+        <text x="344" y="205" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="13.5" font-weight="500" fill="#024E52">/_api/search/query</text>
+        <text x="344" y="226" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="12" fill="#5A6670">KQLで問い合わせ</text>
+      </g>
+      <line x1="344" y1="180" x2="344" y2="131" stroke="#5A6670" stroke-width="1.4" marker-end="url(#ar)"/>
+      <text x="110" y="150" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="12" fill="#5A6670">列名で直接読む = リストAPI</text>
+      <text x="574" y="150" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="12" fill="#B4372F">反映に数分〜数時間の遅延</text>
+    </svg>
+    <figcaption>fig.1 — 検索APIが見るのは常に中央の「索引」であって元データではない</figcaption>
+  </figure>
+
+  <p>この一点からすべての性質が導かれる。</p>
+  <ul class="checks">
+    <li><strong>テナント横断できる</strong> — 索引は全サイト分ある。スコープ指定なしなら全サイトのニュースが対象</li>
+    <li><strong>速い</strong> — 元データを読まない</li>
+    <li><strong>公開直後は出ない</strong> — 索引の更新(クロール)に時間差がある</li>
+    <li><strong>列名がそのまま使えない</strong> — 索引には「管理プロパティ」という別名で載る(→ 03章)</li>
+  </ul>
+
+  <p class="note">ニュースページの識別は <code>PromotedState:2</code>(0=通常ページ / 1=昇格候補 / 2=公開済みニュース)。Highlighted Content Web Part も内部で人物プロファイル除外(<code>-ContentClass=urn:content-class:SPSPeople</code>)を自動付加しており、Webパーツと生クエリの結果が微妙に違う原因のひとつになっている。</p>
+</section>
+
+<!-- ===== 02 ===== -->
+<section id="request">
+  <div class="sec-head"><span class="sec-num">02</span><h2>リクエストの基本形 — 3つの質問</h2></div>
+
+  <p>URLは長くて威圧的だが、骨格は<strong>3つの質問に答えているだけ</strong>。「ニュースを探して、タイトルとURLだけ、10件ちょうだい」。</p>
+
+<pre>GET /_api/search/query?
+  querytext='PromotedState:2'          <span class="c">← ① 何を探す?(KQL)</span>
+  &amp;selectproperties='Title,Path'       <span class="c">← ② 何の情報が欲しい?</span>
+  &amp;rowlimit=10                         <span class="c">← ③ 何件欲しい?</span></pre>
+
+  <p>実用でよく足すのは並び順と、JSONで受けるためのヘッダー。</p>
+
+<pre><span class="c">// ニュース一覧の実用形(ブラウザConsoleから)</span>
+<span class="k">const</span> res = <span class="k">await</span> fetch(
+  <span class="s">"/_api/search/query?querytext='PromotedState:2'"</span> +
+  <span class="s">"&amp;selectproperties='Title,Path,Author,FirstPublishedDate,"</span> +
+  <span class="s">"PictureThumbnailURL,SiteTitle,Description'"</span> +
+  <span class="s">"&amp;sortlist='FirstPublishedDate:descending'&amp;rowlimit=20"</span>,
+  { headers: { Accept: <span class="s">"application/json;odata=nometadata"</span> } }
+);</pre>
+
+  <table>
+    <tr><th style="width:34%">パラメータ</th><th>役割・注意点</th></tr>
+    <tr><td><code>querytext</code></td><td>KQL条件。<code>プロパティ:値</code> を <code>AND / OR / NOT</code> で連結。日本語やダブルクォートを含むときは <code>encodeURIComponent</code> 必須(→ 06章の失敗例)</td></tr>
+    <tr><td><code>selectproperties</code></td><td>返すプロパティの指定。<strong>公開日 <code>FirstPublishedDate</code> は既定で返らない</strong>ので明示する。<code>Write</code> は更新日なので公開日表示に使うと編集のたびに動く</td></tr>
+    <tr><td><code>sortlist</code></td><td>既定は関連度(Rank)順で新着順ではない。ニュース一覧なら <code>FirstPublishedDate:descending</code> がほぼ必須</td></tr>
+    <tr><td><code>rowlimit</code></td><td>既定10件。件数の全体は <code>TotalRows</code> で確認</td></tr>
+    <tr><td><code>trimduplicates</code></td><td>既定 <code>true</code>。内容がほぼ同一のページは畳まれる。「あるはずのページが出ない」ときは <code>false</code> を試す</td></tr>
+    <tr><td><code>refiners</code> / <code>refinementfilters</code></td><td>カテゴリごとの件数集計と絞り込み。使えるのは <strong>Refinable な管理プロパティのみ</strong>(→ 04章)</td></tr>
+  </table>
+
+  <div class="card">
+    <h4>KQLのスコープ指定パターン</h4>
+    <p style="margin-bottom:6px"><code>Path:https://tenant.sharepoint.com/sites/xxx/*</code> — 特定サイト配下に限定</p>
+    <p style="margin-bottom:6px"><code>DepartmentId:{hubSiteId}</code> — ハブサイト配下に限定</p>
+    <p style="margin-bottom:0"><code>TabCategory:*</code> — 値が入っているものだけ(null除外)</p>
+  </div>
+</section>
+
+<!-- ===== 03 ===== -->
+<section id="pipeline">
+  <div class="sec-head"><span class="sec-num">03</span><h2>プロパティの一生 — 列がKQLで使えるようになるまで</h2></div>
+
+  <p>最大のつまずきポイント。リストに「カテゴリ」列を作っても <code>querytext='カテゴリ:お知らせ'</code> は<strong>動かない</strong>。列の値は3段階の加工ラインを通って初めて検索で使える名前になる。</p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 680 380" role="img" aria-label="列がクロールでクロールプロパティになり、マッピングで管理プロパティになる3段階の流れ">
+      <defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5A6670" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <g>
+        <rect x="190" y="24" width="300" height="66" rx="7" fill="#F0F2F1" stroke="#B9C2C0" stroke-width="1"/>
+        <text x="340" y="52" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="15" font-weight="700" fill="#20262B">列「カテゴリ」= TABCATEGORY</text>
+        <text x="340" y="73" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="12" fill="#5A6670">リスト上の生データ(内部名が本体)</text>
+      </g>
+      <line x1="340" y1="90" x2="340" y2="132" stroke="#5A6670" stroke-width="1.4" marker-end="url(#ar2)"/>
+      <text x="362" y="116" font-family="'IBM Plex Sans JP',sans-serif" font-size="12" fill="#5A6670">クロール(自動・定期)</text>
+      <g>
+        <rect x="190" y="144" width="300" height="66" rx="7" fill="#FBF1E2" stroke="#B96A00" stroke-width="1.1"/>
+        <text x="340" y="172" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="15" font-weight="700" fill="#7A4600">クロールプロパティ</text>
+        <text x="340" y="193" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="12.5" fill="#B96A00">ows_TABCATEGORY(自動生成の生メモ)</text>
+      </g>
+      <line x1="340" y1="210" x2="340" y2="252" stroke="#5A6670" stroke-width="1.4" marker-end="url(#ar2)"/>
+      <text x="362" y="236" font-family="'IBM Plex Sans JP',sans-serif" font-size="12" fill="#5A6670">マッピング(手動・一度だけ)</text>
+      <g>
+        <rect x="190" y="264" width="300" height="66" rx="7" fill="#E3EFEF" stroke="#036C70" stroke-width="1.2"/>
+        <text x="340" y="292" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="15" font-weight="700" fill="#024E52">管理プロパティ</text>
+        <text x="340" y="313" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="12.5" fill="#036C70">TabCategory / RefinableString00</text>
+      </g>
+      <text x="340" y="362" text-anchor="middle" font-family="'IBM Plex Sans JP',sans-serif" font-size="12.5" fill="#5A6670">マッピング後に再インデックス → 次回クロールで値が転記され、KQLで使える</text>
+    </svg>
+    <figcaption>fig.2 — 生メモ層(サイトごとの実態)と窓口層(テナント共通スキーマ)の分離</figcaption>
+  </figure>
+
+  <table>
+    <tr><th style="width:26%">用語</th><th>正体</th></tr>
+    <tr><td><strong>クロール</strong></td><td>クローラーが数分〜数十分おきにテナントを巡回し、変更アイテムを索引へ運ぶ裏方プロセス。「再インデックス」は次の巡回で全件読み直す予約</td></tr>
+    <tr><td><strong>クロールプロパティ</strong></td><td>クロール時に列から<em>自動生成される生メモ</em>。<code>ows_内部名</code> 形式。KQLからは直接参照できない。<strong>値が入ったアイテムが実際にクロールされて初めて生成される</strong></td></tr>
+    <tr><td><strong>管理プロパティ</strong></td><td>検索エンジンが公式に受け付ける窓口。<code>Title</code> や <code>PromotedState</code> が最初から使えるのはMicrosoftがマッピング済みだから。独自列は自分でマップする</td></tr>
+    <tr><td><strong>マッピング</strong></td><td>「生メモ○○を窓口△△に転記せよ」というルール登録。1つのクロールプロパティを複数の管理プロパティにマップ可能</td></tr>
+  </table>
+
+  <div class="pitfall">
+    <span class="tag">PITFALL — 日本語列名の罠</span>
+    <p>クロールプロパティは表示名ではなく<strong>内部名</strong>から作られる。日本語で列を作ると内部名は <code>_x30ab__x30c6_...</code> のようなエンコード文字列になり、「ows_カテゴリ」で検索しても永遠にヒットしない。</p>
+    <p>内部名の確認:ライブラリ設定 → 列をクリック → URLの <code>Field=</code> 以降。定石は<strong>英語名で列を作ってから表示名を日本語に変える</strong>(内部名は英語のまま残る)。今回のテナントは <code>TABCATEGORY</code> という英語内部名だったため <code>ows_TABCATEGORY</code> がそのまま見つかった。</p>
+  </div>
+
+  <div class="pitfall">
+    <span class="tag">PITFALL — 列の型で格納形式が変わる</span>
+    <p>選択肢(単一)・1行テキストは入力値そのまま。<strong>複数選択可</strong>は <code>値;#値</code> 形式で入ることがある。<strong>管理メタデータ列</strong>は <code>GP0|#GUID</code> 形式になり文字列マップでは実用にならない(<code>owstaxId〜</code> 系を使う)。</p>
+  </div>
+
+  <p class="note">なぜ二段構えなのか:テナント内には同名の列が無数にある。生メモ層で各サイトの実態を吸収し、窓口層で1つのテナント共通名に集約するから、複数サイトの「カテゴリ」列を横断で同じKQLで検索できる。ただし集約されるのは<strong>内部名が揃っている場合のみ</strong>。サイトごとに手作りすると内部名がズレて別のクロールプロパティに分かれるので注意。</p>
+</section>
+
+<!-- ===== 04 ===== -->
+<section id="managed">
+  <div class="sec-head"><span class="sec-num">04</span><h2>管理プロパティの設定 — 2つの選択肢と制約</h2></div>
+
+  <p>マッピング先は2通り。実務では<strong>両方にマップする両取りが定石</strong>(1つのクロールプロパティは複数の管理プロパティへマップできる)。</p>
+
+  <table>
+    <tr><th style="width:30%"></th><th style="width:35%">自作プロパティ<br><code>TabCategory</code></th><th>予約スロット<br><code>RefinableString00〜99</code></th></tr>
+    <tr><td><strong>KQL絞り込み</strong></td><td>○(Queryable有効化が条件)</td><td>○</td></tr>
+    <tr><td><strong>refiner集計</strong></td><td><span style="color:var(--red)">×(構造上不可)</span></td><td>○</td></tr>
+    <tr><td><strong>ソート</strong></td><td><span style="color:var(--red)">×(構造上不可)</span></td><td>○</td></tr>
+    <tr><td><strong>クエリの可読性</strong></td><td>◎ <code>TabCategory:"ツール"</code></td><td>△(エイリアスで緩和可)</td></tr>
+  </table>
+
+  <p>SharePoint Onlineでは自作プロパティを Refinable / Sortable にできない。Refinable系が <code>RefinableString00</code> のような予約名で大量に事前確保されているのは、これらがインデックスの物理構造に関わるため。</p>
+
+  <h3>自作プロパティで必ず確認するチェックボックス</h3>
+  <ul class="checks">
+    <li><strong>Queryable(クエリ可能)</strong> — 無効だとKQLで指定しても<em>エラーにならず黙って無視される</em>。最重要</li>
+    <li><strong>Retrievable(取得可能)</strong> — 無効だと <code>selectproperties</code> で値が返らない。デバッグの覗きクエリにも必要</li>
+    <li>Searchable — プロパティ名なしのフリーワード検索で当てたい場合のみ任意</li>
+  </ul>
+
+  <h3>設定手順(今回の実施内容)</h3>
+  <ul class="checks">
+    <li>SharePoint管理センター → 検索スキーマの管理 → 新しい管理プロパティ <code>TabCategory</code> を作成、Queryable / Retrievable を有効化</li>
+    <li>クロールされたプロパティへのマッピングで <code>ows_TABCATEGORY</code> を追加</li>
+    <li>対象ライブラリ → 詳細設定 → <strong>再インデックス</strong>(マッピングの<em>後</em>に実行。順番が逆だと転記されない)</li>
+    <li>反映待ち:早ければ15分、混雑時は数時間</li>
+  </ul>
+</section>
+
+<!-- ===== 05 ===== -->
+<section id="response">
+  <div class="sec-head"><span class="sec-num">05</span><h2>レスポンスの読み方 — 一本道とデバッグの目印</h2></div>
+
+  <p>レスポンスは異様にネストが深いが、降りる道は毎回同じ。暗記対象は実質1行。<code>Cells</code> がKey-Value配列なのは、<code>selectproperties</code> で要求したものだけが動的に詰められる仕組みだから。</p>
+
+<pre><span class="k">const</span> rows = data.PrimaryQueryResult.RelevantResults.Table.Rows;
+<span class="k">const</span> items = rows.map(r =&gt;
+  Object.fromEntries(r.Cells.map(c =&gt; [c.Key, c.Value]))
+);
+<span class="c">// これでリストAPIと同じ感覚のオブジェクト配列になる</span></pre>
+
+  <h3>レスポンス内のデバッグ用シグナル</h3>
+  <table>
+    <tr><th style="width:36%">場所</th><th>読み方</th></tr>
+    <tr><td><code>SerializedQuery</code> の <code>QueryText</code></td><td><strong>0件のとき最初に見る場所。</strong>ここが空ならクエリ自体がサーバーに届いていない(エンコード事故)。条件の問題以前の話</td></tr>
+    <tr><td><code>QueryModification</code></td><td>実際に実行されたクエリ。自動付加された除外条件もここで分かる</td></tr>
+    <tr><td><code>TotalRows</code></td><td>ヒット総数。<code>RowCount</code> は今回返った件数</td></tr>
+    <tr><td><code>TotalRowsIncludingDuplicates</code></td><td>重複除去前の件数。差分 = 畳まれたページ数</td></tr>
+    <tr><td><code>Rank</code></td><td>関連度スコア。<code>sortlist</code> 指定時はソートキーがエンコードされた巨大な値になり、意味を持たなくなる</td></tr>
+    <tr><td><code>HasParseException</code></td><td>KQLの構文エラー検知</td></tr>
+  </table>
+
+  <div class="pitfall">
+    <span class="tag">PITFALL — URLエンコード事故</span>
+    <p>日本語+ダブルクォート+ANDスペースの組み合わせをアドレスバーに直貼りすると、<code>querytext</code> が壊れて<strong>空文字で届く</strong>ことがある。結果は「エラーなしの0件」で、条件の問題と区別がつかない。</p>
+    <p>対策:KQL全体を <code>encodeURIComponent</code> でエンコードする(APIの構文である外側のシングルクォートは対象外)。そして0件のときはまず <code>SerializedQuery</code> を確認する習慣をつける。</p>
+  </div>
+</section>
+
+<!-- ===== 06 ===== -->
+<section id="journey">
+  <div class="sec-head"><span class="sec-num">06</span><h2>検証ログ — 実テナントでの全工程</h2></div>
+
+  <p>実際に踏んだ手順と結果。失敗も含めてすべてが切り分けの材料になった。</p>
+
+  <ol class="log">
+    <li>
+      <div class="step-title"><span class="stamp ok">成功</span>最小クエリで疎通確認 <span class="q">querytext='PromotedState:2'</span></div>
+      <p class="detail">TotalRows 253件。3サイト(NewsPages / xsp-feature / mare-group)が混在し、テナント横断を確認。重複除去前は353件で、100件が畳まれていることも判明。並びはRank順で新着順ではない。</p>
+    </li>
+    <li>
+      <div class="step-title"><span class="stamp ok">成功</span>プロパティ明示+新着順ソート <span class="q">selectproperties + sortlist</span></div>
+      <p class="detail">FirstPublishedDate の完全降順に。既定では返らない公開日が取得でき、レスポンスもスリム化。副産物としてコピーページ(〜(1).aspx)の重複と、Descriptionの繰り返し設定ミスを発見。</p>
+    </li>
+    <li class="ng">
+      <div class="step-title"><span class="stamp ng">失敗</span>クロールプロパティが見つからない <span class="q">ows_列名 → 0件</span></div>
+      <p class="detail">検索スキーマで「ows_カテゴリ」がヒットせず。原因は表示名で探していたこと。内部名を確認すると英語の TABCATEGORY で、ows_TABCATEGORY が存在した。「ows_」だけで検索して一覧を目視するのが確実。</p>
+    </li>
+    <li class="ng">
+      <div class="step-title"><span class="stamp ng">失敗</span>絞り込み0件 <span class="q">RefinableString00:"お知らせ"</span></div>
+      <p class="detail">AND条件込みの0件では原因が見えない。絞り込みを外して値だけ覗くクエリに切り替える方針へ。後に判明した真因は「お知らせ」という値がそもそも存在しなかったこと(実在値は Coliss / デザイン / ツール)。</p>
+    </li>
+    <li>
+      <div class="step-title"><span class="stamp ok">成功</span>覗きクエリで転記確認 <span class="q">selectproperties='Title,TabCategory'</span></div>
+      <p class="detail">自作管理プロパティ TabCategory(Queryable + Retrievable)へのマッピング+再インデックス後、値の転記を確認。日本語値「デザイン」も文字化けなし。実在するカテゴリ値の棚卸しができた。</p>
+    </li>
+    <li class="ng">
+      <div class="step-title"><span class="stamp ng">失敗</span>エラーなしの0件 <span class="q">QueryText=""</span></div>
+      <p class="detail">日本語込みのURLを直貼りした結果、SerializedQuery の QueryText が空でサーバーに到達。クエリが届いていないだけで、マッピングにも値にも問題なし。encodeURIComponent で解決。</p>
+    </li>
+    <li>
+      <div class="step-title"><span class="stamp ok">達成</span>カテゴリ絞り込み完成 <span class="q">TabCategory:"ツール" → 23件</span></div>
+      <p class="detail">全件がTabCategory「ツール」で返り、当初の目標(テナント横断ニュース取得+カテゴリ絞り込み)を完全達成。</p>
+    </li>
+  </ol>
+</section>
+
+<!-- ===== 07 ===== -->
+<section id="trouble">
+  <div class="sec-head"><span class="sec-num">07</span><h2>トラブルシューティング早見表</h2></div>
+
+  <table>
+    <tr><th style="width:38%">症状</th><th>疑う順番</th></tr>
+    <tr><td>0件(エラーなし)</td><td>① <code>SerializedQuery</code> のQueryTextが空でないか(エンコード事故) ② 値が実在するか(絞り込みを外して覗く) ③ Queryable有効か ④ 転記済みか(マッピング→再インデックスの順番と待ち時間)</td></tr>
+    <tr><td>公開したのに出てこない</td><td>クロール遅延。数分〜十数分待つ。急ぎなら再インデックス予約</td></tr>
+    <tr><td>ows_列名 が見つからない</td><td>① 表示名でなく<strong>内部名</strong>か ② 値が入ったアイテムがクロール済みか ③ 見ている検索スキーマがテナント側(管理センター)か</td></tr>
+    <tr><td>KQLでプロパティ指定が無視される</td><td>Queryable未設定。エラーにならないのが厄介</td></tr>
+    <tr><td>selectpropertiesで値が返らない</td><td>Retrievable未設定</td></tr>
+    <tr><td>あるはずのページが出ない</td><td>TrimDuplicatesで畳まれている。<code>&amp;trimduplicates=false</code> で確認</td></tr>
+    <tr><td>並びがおかしい</td><td>既定はRank順。<code>sortlist</code> を明示</td></tr>
+    <tr><td>refiner / ソートができない</td><td>自作プロパティの構造的制約。<code>RefinableString00</code> 系に追加マップ</td></tr>
+  </table>
+</section>
+
+<!-- ===== 08 ===== -->
+<section id="code">
+  <div class="sec-head"><span class="sec-num">08</span><h2>最終コード</h2></div>
+
+  <p>到達した完成形。サイト内ページのConsole・SPFx・外部アプリ(要認証)でそのまま使える。</p>
+
+<pre><span class="k">async function</span> getNews({ category = <span class="k">null</span>, count = 20 } = {}) {
+  <span class="k">let</span> kql = <span class="s">"PromotedState:2"</span>;
+  <span class="k">if</span> (category) kql += <span class="s">` AND TabCategory:"${category}"`</span>;
+
+  <span class="k">const</span> res = <span class="k">await</span> fetch(
+    <span class="s">`/_api/search/query?querytext='${encodeURIComponent(kql)}'`</span> +
+    <span class="s">`&amp;selectproperties='Title,Path,Author,FirstPublishedDate,`</span> +
+    <span class="s">`PictureThumbnailURL,SiteTitle,Description,TabCategory'`</span> +
+    <span class="s">`&amp;sortlist='FirstPublishedDate:descending'&amp;rowlimit=${count}`</span>,
+    { headers: { Accept: <span class="s">"application/json;odata=nometadata"</span> } }
+  );
+  <span class="k">const</span> data = <span class="k">await</span> res.json();
+
+  <span class="c">// デバッグ:0件のときはまずここを見る</span>
+  <span class="c">// console.log(data.Properties.find(p =&gt; p.Key === "SerializedQuery")?.Value);</span>
+
+  <span class="k">return</span> data.PrimaryQueryResult.RelevantResults.Table.Rows.map(r =&gt;
+    Object.fromEntries(r.Cells.map(c =&gt; [c.Key, c.Value]))
+  );
+}
+
+<span class="c">// 使い方</span>
+<span class="k">const</span> all   = <span class="k">await</span> getNews();                        <span class="c">// 全ニュース新着順</span>
+<span class="k">const</span> tools = <span class="k">await</span> getNews({ category: <span class="s">"ツール"</span> }); <span class="c">// カテゴリ絞り込み → 23件</span></pre>
+
+  <p class="note">開発のコツ:Highlighted Content Web Part を配置したページを開発者ツールで開き、Networkタブの <code>/_api/search/postquery</code> を見ると、Webパーツが実際に投げているQueryTemplateやSelectPropertiesをそのまま確認できる。記事より確実な一次情報。</p>
+</section>
+
+<!-- ===== 09 ===== -->
+<section id="refs">
+  <div class="sec-head"><span class="sec-num">09</span><h2>参考リンク</h2></div>
+  <ul class="links">
+    <li><a class="ext" href="https://learn.microsoft.com/en-us/sharepoint/dev/general-development/sharepoint-search-rest-api-overview">SharePoint Search REST API overview</a><span class="src">Microsoft Learn — パラメータ仕様の基本はここ</span></li>
+    <li><a class="ext" href="https://learn.microsoft.com/en-us/microsoft-365/community/highlighted-content-web-part">Advanced Highlighted Content Web Part</a><span class="src">Microsoft 365 Community Docs — 管理プロパティ・KQL/CAMLの学習パス</span></li>
+    <li><a class="ext" href="https://support.microsoft.com/en-us/office/use-the-highlighted-content-web-part-e34199b0-ff1a-47fb-8f4d-dbcaed329efd">Use the Highlighted content web part</a><span class="src">Microsoft Support — カスタムクエリの公式ガイド</span></li>
+    <li><a class="ext" href="https://www.computerworld.com/article/1716788/how-to-use-the-highlighted-content-web-part-on-modern-sharepoint-pages.html">How to use the Highlighted Content web part on modern SharePoint pages</a><span class="src">Computerworld — HCWPが _api/search を呼ぶ内部動作に触れた数少ない記事</span></li>
+    <li><a class="ext" href="https://lightningtools.com/blog/highlighted-content-web-part-kql-caml/">Highlighted Content Web Part Custom Query</a><span class="src">Lightning Tools — スコープごとのKQL/CAML使い分け</span></li>
+  </ul>
+</section>
+
+<!-- ===== 10 ===== -->
+<section id="ops">
+  <div class="sec-head"><span class="sec-num">10</span><h2>操作リファレンスとKQL入門</h2></div>
+
+  <p>4つの関係を一文で:<strong>KQLで聞ける名前を作るのが管理プロパティ登録、その値を索引に運ぶのがクロール、運ばせる予約が再インデックス、インデックス登録そのものは全自動</strong>。以下、それぞれの実際の操作。</p>
+
+  <h3>クロールを実行する — 正確には「予約する」</h3>
+  <p>SharePoint Onlineに<strong>クロールの手動実行ボタンは存在しない</strong>。オンプレ版にあった「フルクロール開始」は管理者にも開放されておらず、クローラーはMicrosoft管理の継続的クロール(数分〜十数分間隔)で自動巡回している。できるのは「次の巡回で全件読み直してもらう予約」=<strong>再インデックス</strong>のみ。</p>
+
+  <table>
+    <tr><th style="width:30%">スコープ</th><th>操作場所</th></tr>
+    <tr><td>ライブラリ / リスト単位</td><td>ライブラリ設定 → 詳細設定 → 「ドキュメント ライブラリの再インデックス」。マッピング変更後の転記にはこれで十分</td></tr>
+    <tr><td>サイト単位</td><td>サイト設定 → 「検索と可用性」 → 「サイトの再インデックス」。サイト列変更など広範囲に効かせたいとき</td></tr>
+    <tr><td>PnP PowerShell</td><td>下のコピペ用スニペット参照。複数ライブラリ・複数サイトの一括処理はこちらが速い</td></tr>
+  </table>
+
+  <p class="url-label">PnP PowerShell — 再インデックス一式(接続 → リスト単位 → サイト単位)</p>
+  <div class="copy-wrap"><pre># 事前準備(未導入なら1回だけ)
+Install-Module PnP.PowerShell -Scope CurrentUser
+
+# 対象サイトへ接続({tenant} {site} を置き換え)
+Connect-PnPOnline -Url https://{tenant}.sharepoint.com/sites/{site} -Interactive
+
+# ライブラリ / リスト単位の再インデックス
+Request-PnPReIndexList -Identity "サイトのページ"
+
+# サイト単位の再インデックス(サイト内の全リストが対象)
+Request-PnPReIndexWeb
+
+# 切断
+Disconnect-PnPOnline</pre><button class="copy-btn" type="button">Copy</button></div>
+
+  <p class="url-label">PnP PowerShell — 複数サイトを一括再インデックス(カテゴリ列を横展開した後など)</p>
+  <div class="copy-wrap"><pre>$sites = @(
+  "https://{tenant}.sharepoint.com/sites/NewsPages",
+  "https://{tenant}.sharepoint.com/sites/xsp-feature",
+  "https://{tenant}.sharepoint.com/sites/Share-Point/mare-group"
+)
+foreach ($url in $sites) {
+  Connect-PnPOnline -Url $url -Interactive
+  Request-PnPReIndexList -Identity "サイトのページ"
+  Write-Host "再インデックス予約: $url"
+  Disconnect-PnPOnline
+}</pre><button class="copy-btn" type="button">Copy</button></div>
+
+  <p class="note">仕組み:これらの操作は <code>vti_searchversion</code> プロパティを+1しているだけ。クローラーは巡回時にこの番号の上昇を見て「全アイテム読み直し」と判断する。つまり即時実行ではなく<em>あくまで予約</em>で、反映は15分〜数時間後。なお、アイテムの通常の編集・公開は次の巡回で自動クロールされるため、再インデックスが必要なのは「アイテムは変わっていないのに索引の作り方(マッピング)を変えた」ときだけ。</p>
+
+  <h3>検索インデックスに登録する — 「する」ものではなく「される」もの</h3>
+  <p><strong>インデックスへの登録操作は存在しない</strong>。登録は常にクロールの副産物として自動で起きる。コントロールできるのは「登録される条件を整える」ことと「登録させない」ことだけ。</p>
+
+  <table>
+    <tr><th style="width:30%">やりたいこと</th><th>方法</th></tr>
+    <tr><td>登録する</td><td>操作不要。検索可能な場所に置き、閲覧権限があり、公開されていれば次の巡回で自動登録される</td></tr>
+    <tr><td>除外する(サイト)</td><td>サイト設定 → 検索と可用性 → 「このサイトを検索結果に表示する」をいいえ</td></tr>
+    <tr><td>除外する(リスト)</td><td>詳細設定 → 「このライブラリのアイテムを検索結果に表示する」をいいえ</td></tr>
+    <tr><td>登録済みか確認</td><td>Search APIで覗く:<code>querytext='Path:"https://.../ページ名.aspx"'</code> — 0件なら未クロールか除外設定</td></tr>
+  </table>
+
+  <h3>新しい管理プロパティを登録する — 完全手順</h3>
+  <p>場所:SharePoint管理センター → その他の機能 → 検索 → <strong>検索スキーマの管理</strong>。</p>
+  <ul class="checks">
+    <li>「管理プロパティ」タブ → 「新しい管理プロパティ」。名前は英数字のみ・<strong>後から変更不可</strong>(例:<code>TabCategory</code>)</li>
+    <li>型を選択(テキスト列由来なら「テキスト」)</li>
+    <li><strong>クエリ可能(Queryable)</strong>にチェック — 忘れるとKQLで黙って無視される</li>
+    <li><strong>取得可能(Retrievable)</strong>にチェック — 忘れると selectproperties で値が返らない</li>
+    <li>「クロールしたプロパティへのマッピング」→ <code>ows_TABCATEGORY</code> を検索して追加 → 保存</li>
+    <li>対象ライブラリで<strong>再インデックス</strong>(マッピング保存の<em>後</em>に実行。順番が逆だと転記されない)</li>
+    <li>15分〜数時間待って覗きクエリで転記確認</li>
+  </ul>
+
+  <div class="card">
+    <h4>Refinable / Sortable が必要な場合(自作では不可)</h4>
+    <p style="margin-bottom:6px">新規作成ではなく予約スロット <code>RefinableString00〜99</code> を<strong>編集</strong>してマッピングを追加する。「エイリアス」欄に別名(例:<code>TabCategoryRef</code>)を入れるとKQLの可読性を保てる。</p>
+    <p style="margin-bottom:0">空きスロットはマッピング欄が空かどうかで確認。テナント共有資源なので他用途との衝突に注意。複数テナント展開なら <code>Get-PnPSearchConfiguration</code> / <code>Set-PnPSearchConfiguration</code> でスキーマXMLを持ち回るのが確実。</p>
+  </div>
+
+  <h3>KQLとは何か</h3>
+  <p><strong>Keyword Query Language</strong>。SharePoint検索(Microsoft Search全般)への問い合わせ専用言語で、<code>querytext</code> の中身がこれ。SQLのような重厚な言語ではなく、Googleに <code>site:example.com filetype:pdf</code> と打つ感覚に近い検索特化の軽量文法。構成要素は3種類だけ。</p>
+
+<pre><span class="c">// ① フリーテキスト — 全文(Searchableなプロパティ)から探す</span>
+防災訓練
+<span class="s">"防災 訓練"</span>                          <span class="c">← フレーズ完全一致</span>
+
+<span class="c">// ② プロパティ制限 — Queryableな管理プロパティのみ使える</span>
+PromotedState:2
+TabCategory:<span class="s">"ツール"</span>
+FirstPublishedDate&gt;=2026-07-01       <span class="c">← 比較演算子 = : &lt; &gt; &lt;= &gt;=</span>
+Title:CSS*                            <span class="c">← 前方一致ワイルドカード</span>
+TabCategory:*                         <span class="c">← 値が存在する(null除外)</span>
+
+<span class="c">// ③ 演算子 — 必ず大文字(小文字だとただの検索語扱い)</span>
+PromotedState:2 <span class="k">AND</span> TabCategory:<span class="s">"ツール"</span>
+TabCategory:<span class="s">"ツール"</span> <span class="k">OR</span> TabCategory:<span class="s">"デザイン"</span>
+PromotedState:2 <span class="k">NOT</span> Path:https://tenant.sharepoint.com/sites/test/*
+(A <span class="k">OR</span> B) <span class="k">AND</span> C                       <span class="c">← カッコでグループ化</span></pre>
+
+  <p class="note">コロン <code>:</code> は「含む」、イコール <code>=</code> は「完全一致」。これだけで実務の9割はカバーできる。残り(NEAR近接検索、XRANKランク調整など)は必要になったときに <a class="ext" href="https://learn.microsoft.com/en-us/sharepoint/dev/general-development/keyword-query-language-kql-syntax-reference">KQL syntax reference</a> を引けば十分。兄弟言語のFQLもAPIは受け付けるが、KQLで足りない場面はまずない。HCWPカスタムクエリで登場したCAMLは検索ではなくリスト直接クエリの言語なので、Search API側では使わない。</p>
+
+  <h3>コピペで使える検証URL集</h3>
+  <p><code>{tenant}</code> を自テナント名に置き換えれば、サインイン済みブラウザのアドレスバーにそのまま貼って動く。日本語を含むものはエンコード済み。Console用の相対パス版はページ下のスニペットを使う。</p>
+
+  <p class="url-label">① 疎通確認 — ニュースが何件あるか(TotalRowsを見る)</p>
+  <div class="copy-wrap"><pre>https://{tenant}.sharepoint.com/_api/search/query?querytext='PromotedState:2'</pre><button class="copy-btn" type="button">Copy</button></div>
+
+  <p class="url-label">② 新着順ニュース一覧 — 実用フル版(公開日・サムネイル付き)</p>
+  <div class="copy-wrap"><pre>https://{tenant}.sharepoint.com/_api/search/query?querytext='PromotedState:2'&amp;selectproperties='Title,Path,Author,FirstPublishedDate,PictureThumbnailURL,SiteTitle,Description'&amp;sortlist='FirstPublishedDate:descending'&amp;rowlimit=20</pre><button class="copy-btn" type="button">Copy</button></div>
+
+  <p class="url-label">③ 覗きクエリ — 管理プロパティに値が転記されたか確認(絞り込みなし)</p>
+  <div class="copy-wrap"><pre>https://{tenant}.sharepoint.com/_api/search/query?querytext='PromotedState:2'&amp;selectproperties='Title,TabCategory'&amp;rowlimit=10</pre><button class="copy-btn" type="button">Copy</button></div>
+
+  <p class="url-label">④ カテゴリ絞り込み — 日本語値のエンコード済み例(TabCategory:"ツール")</p>
+  <div class="copy-wrap"><pre>https://{tenant}.sharepoint.com/_api/search/query?querytext='PromotedState%3A2%20AND%20TabCategory%3A%22%E3%83%84%E3%83%BC%E3%83%AB%22'&amp;selectproperties='Title,TabCategory,FirstPublishedDate'&amp;sortlist='FirstPublishedDate:descending'&amp;rowlimit=20</pre><button class="copy-btn" type="button">Copy</button></div>
+
+  <p class="url-label">⑤ 特定ページの登録確認 — 0件なら未クロールか除外設定</p>
+  <div class="copy-wrap"><pre>https://{tenant}.sharepoint.com/_api/search/query?querytext='Path:"https://{tenant}.sharepoint.com/sites/{site}/SitePages/{page}.aspx"'</pre><button class="copy-btn" type="button">Copy</button></div>
+
+  <p class="url-label">⑥ 重複込み全件 — 「あるはずのページが出ない」ときの切り分け</p>
+  <div class="copy-wrap"><pre>https://{tenant}.sharepoint.com/_api/search/query?querytext='PromotedState:2'&amp;trimduplicates=false&amp;rowlimit=50</pre><button class="copy-btn" type="button">Copy</button></div>
+
+  <p class="url-label">⑦ Console用スニペット — 相対パスで実行し、SerializedQueryと結果を同時確認</p>
+  <div class="copy-wrap"><pre>const kql = `PromotedState:2 AND TabCategory:"ツール"`;
+const res = await fetch(
+  `/_api/search/query?querytext='${encodeURIComponent(kql)}'` +
+  `&amp;selectproperties='Title,TabCategory,FirstPublishedDate'` +
+  `&amp;sortlist='FirstPublishedDate:descending'&amp;rowlimit=20`,
+  { headers: { Accept: "application/json;odata=nometadata" } }
+);
+const data = await res.json();
+console.log(data.Properties.find(p =&gt; p.Key === "SerializedQuery")?.Value);
+console.table(
+  data.PrimaryQueryResult.RelevantResults.Table.Rows.map(r =&gt;
+    Object.fromEntries(r.Cells.map(c =&gt; [c.Key, c.Value]))
+  )
+);</pre><button class="copy-btn" type="button">Copy</button></div>
+
+  <p class="note">ブラウザ直貼りの結果はXMLで表示される。JSONで見たい場合は⑦のConsoleスニペットを使う(Acceptヘッダーが必要なため)。0件が返ったら、まず <code>SerializedQuery</code> の <code>QueryText</code> が空でないかを確認すること。</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    SharePoint Search REST API Field Notes — 検証環境での実測に基づく記録(2026-08)。<br>
+    検索は「本棚」ではなく「索引」を引く。この一文だけ覚えて帰ってください。
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var pre = btn.parentElement.querySelector('pre');
+    var text = pre.textContent;
+    function done(){
+      btn.textContent = 'Copied!';
+      btn.classList.add('done');
+      setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1600);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta); done();
+    }
+  });
+});
+</script>
+</body>
+</html>
