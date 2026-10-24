@@ -61,6 +61,17 @@ Web パーツ・拡張機能の UI を実装する際は以下を参照するこ
 
 **重要**: カラー変数は `var(--colorBrandBackground)` など Fluent UI の CSS カスタムプロパティを使うこと。ハードコードした色値は禁止。ライト/ダーク両対応の変換ルールは `sharepoint-theme-color-palette.md` の「カスタムテーマ設計ガイド」を参照。
 
+## SharePoint への接続（アプリ専用認証・証明書方式）
+
+**開発テナントでは、アプリ専用認証（証明書方式）でサインインなしに SharePoint へ接続できる。**
+PnP PowerShell を直接実行して、リスト・ライブラリの確認・登録・更新・削除を行う。
+
+- 手順・制約・実行の作法: [[knowledge/SPFx/sharepoint-app-only-cert-auth|sharepoint-app-only-cert-auth]]（作業前に必読）
+- **開発テナント限定。本番テナントには使わない。**
+- PowerShell 7（`pwsh`）で実行する。秘密鍵（PFX）は Git 管理外に置き、チャット・リポジトリ・ログに貼らない。
+- ClientId・Thumbprint・サイト URL は、このリポジトリ（公開）に書かない。各プロジェクトの非公開リポジトリの接続スクリプトを使う。
+- 削除・上書きの前に対象を確認し、`-Recycle` を付ける。
+
 ## 共通ルール
 
 タイムアウト・中断ルールを含む全エージェント共通の運用ルールは [[SPRINT-FLOW]] の「全エージェント共通ルール」セクションを参照。
