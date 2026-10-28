@@ -53,6 +53,16 @@ SharePoint / SPFx の UI 実装・カスタマイズ時は以下を参照する�
 
 **重要**: カラー変数は `--colorBrandBackground` など Fluent UI の CSS カスタムプロパティを直接使うこと。ハードコードした色値は禁止。ライト/ダーク切替の設計原則は `sharepoint-theme-color-palette.md` を参照。
 
+## ローカルデバッグ・CSP（SPFx / スクリプト読み込み）
+
+SharePoint Online は 2026-03 から CSP を強制している。外部・localhost のスクリプトは「信頼されたスクリプト ソース」に登録しないとブロックされる。
+
+- SPFx のローカルデバッグ手順: [[knowledge/SPFx/spfx-debug-local|spfx-debug-local]]（`gulp serve --nobrowser` ＋ `debugManifestsFile`。SPFx 1.21 以降は `/temp/build/manifests.js`）
+- CSP の仕様・登録方法: [[knowledge/sharepoint-scriptloader/sharepoint-csp-trusted-script-sources|sharepoint-csp-trusted-script-sources]]
+- localhost デバッグには、管理センター > **詳細設定 > スクリプト ソース**（「設定」ではない）に `https://localhost:4321` を追加する。テナント全体に効くため**開発テナントだけ**。本番には追加しない
+- `Script error for ".../manifests.js"` は、まず開発者ツールのコンソールの最初のエラー（CSP 違反 / ローカルネットワーク許可 / 証明書）を読んで切り分ける
+- インラインスクリプト（`<script>`・`onclick=`・`javascript:`）は CSP でブロックされる。スクリプトファイルへ移す
+
 ## SharePoint への接続（アプリ専用認証・証明書方式）
 
 **開発テナントでは、アプリ専用認証（証明書方式）でサインインなしに SharePoint へ接続できる。**

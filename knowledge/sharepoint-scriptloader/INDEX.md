@@ -1,5 +1,5 @@
 ---
-updated: 2026-05-16
+updated: 2026-10-28
 ---
 
 # sharepoint-scriptloader ナレッジ INDEX
@@ -20,6 +20,12 @@ xsp-script-loader (v1.5.0.0) 用 JS/CSS スクリプト管理リポジトリの�
 |---------|------|------|
 | [[SharePoint-FluentUI-DesignTokens]] | 📚reference | SharePoint Fluent UI v3 デザイントークン一覧 |
 | [[SharePoint-FluentUI-CSS変数リファレンス]] | 📚reference | CSS 変数の完全リファレンス |
+
+## CSP（Content Security Policy）
+
+| ファイル | 種別 | 内容 |
+|---------|------|------|
+| [[sharepoint-csp-trusted-script-sources]] | 📚reference | 2026-03 から強制の CSP・信頼されたスクリプト ソース（管理センター＞詳細設定＞スクリプト ソース）の登録方法・localhost デバッグ許可 |
 
 ## 環境・バージョン
 
