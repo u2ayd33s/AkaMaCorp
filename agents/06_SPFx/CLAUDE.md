@@ -61,6 +61,18 @@ Web パーツ・拡張機能の UI を実装する際は以下を参照するこ
 
 **重要**: カラー変数は `var(--colorBrandBackground)` など Fluent UI の CSS カスタムプロパティを使うこと。ハードコードした色値は禁止。ライト/ダーク両対応の変換ルールは `sharepoint-theme-color-palette.md` の「カスタムテーマ設計ガイド」を参照。
 
+## ローカルデバッグ（実ページ）
+
+`gulp serve --nobrowser` で動かしたローカルのコードを、実際の SharePoint ページに読み込ませて確認する（再パッケージ不要）。
+手順・切り分けは [[knowledge/SPFx/spfx-debug-local|spfx-debug-local]]（デバッグを案内する前に必読）。
+
+- ページ URL に `?debug=true&noredir=true&debugManifestsFile=https://localhost:4321/temp/manifests.js` を付ける（**SPFx 1.21 以降は `/temp/build/manifests.js`**。gulp serve のログに出る URL をそのまま使う）
+- **初回のみ必須（2026-03 以降の CSP 強制）**: SharePoint 管理センター > **詳細設定 > スクリプト ソース** に `https://localhost:4321` を追加（またはAdd-SPOContentSecurityPolicy）。テナント全体に効くので**開発テナントだけ**。本番テナントには追加しない
+- ブラウザの「ローカル ネットワーク アクセス」を許可（Edge/Chrome 142+）。「デバッグ スクリプトを読み込みますか?」で許可
+- `Script error for ".../manifests.js"` が出たら、**最初に開発者ツールのコンソールの最初の赤いエラーを読む**（CSP 違反か、ローカルネットワーク許可か、証明書か）。ネットワークや IPv6 を先に疑わない
+- Node は SPFx 対応版（1.20 なら Node 20）。既定が新しすぎると gulp が失敗する
+- デバッグの案内だけでなく、ユーザーの管理センター操作が要る前提（CSP 許可）を最初に伝える
+
 ## SharePoint への接続（アプリ専用認証・証明書方式）
 
 **開発テナントでは、アプリ専用認証（証明書方式）でサインインなしに SharePoint へ接続できる。**

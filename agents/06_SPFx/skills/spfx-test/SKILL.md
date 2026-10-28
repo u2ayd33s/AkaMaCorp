@@ -44,5 +44,19 @@ npm test              # watch モード
 npm test -- --coverage  # カバレッジ計測
 ```
 
+## 実ページでの動作確認（ローカルデバッグ）
+
+Jest / E2E の前後に、実 SharePoint ページでローカルコードを確認する。手順は [[knowledge/SPFx/spfx-debug-local|spfx-debug-local]]。
+
+```bash
+gulp serve --nobrowser   # SPFx 1.21+ は heft start --nobrowser
+# ページ URL に ?debug=true&noredir=true&debugManifestsFile=https://localhost:4321/temp/manifests.js
+# （1.21+ は /temp/build/manifests.js）
+```
+
+- 初回のみ: 管理センター > 詳細設定 > スクリプト ソースに `https://localhost:4321` を追加（CSP。開発テナントのみ）、ブラウザのローカルネットワークアクセスを許可
+- `Script error` はコンソールの最初のエラーで切り分ける
+
 ## 更新履歴
 - v1.0: 初版作成
+- v1.1: 実ページでのローカルデバッグ手順を追加（2026-10-28）
